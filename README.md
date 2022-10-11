@@ -41,3 +41,9 @@
   - Update profile (name, image)
   - PIN (update)
   - Khoảng thời gian lock app
+
+
+### 5.Request
+#### Get All Room
+#### Get All Message By ROOM_ID
+#### (OPTION) Get Paging Message By ROOM_ID
