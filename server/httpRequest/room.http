@@ -1,0 +1,31 @@
+//create room group
+#POST http://localhost:8080/api/room/userId
+POST http://localhost:8080/api/room/102190030
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
+
+{
+  "name": "GROUP1",
+  "image_ic": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPBQsJdUtRvv2fgMH4600MAsOLZIUZsFsXU4WqAc6NdQ&s"
+}
+
+###
+//create room private
+#POST http://localhost:8080/api/room/private/userId&receiveId
+POST http://localhost:8080/api/room/private/102190029&102190030
+
+
+###
+//get all room
+GET http://localhost:8080/api/room/
+
+
+###
+//get all room by userId
+#GET http://localhost:8080/api/room/{{userId}}
+GET http://localhost:8080/api/room/102190029
+
+###
+//delete room
+#DELETE http://localhost:8080/api/room/{{rId}}
+DELETE http://localhost:8080/api/room/{{rid}}
