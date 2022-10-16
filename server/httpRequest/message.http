@@ -1,0 +1,26 @@
+//create message
+#POST http://localhost:8080/api/message/{{userId}}&{{roomId}}
+POST http://localhost:8080/api/message/102190029&634ad102b48fbd4e6e2b5185
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
+
+{
+  "message": "test",
+  "type": "text"
+}
+
+###
+//get all message
+GET http://localhost:8080/api/message/
+
+
+###
+//get all message by roomId
+#GET http://localhost:8080/api/message/{{roomId}}
+GET http://localhost:8080/api/message/634ab817319f231d0db6e75e
+
+
+###
+//delete message
+#DELETE http://localhost:8080/api/message/{{msgId}}
+DELETE http://localhost:8080/api/message/634ad2a05a7e1578ce47a5f6
