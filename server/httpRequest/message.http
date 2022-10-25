@@ -24,3 +24,27 @@ GET http://localhost:8080/api/message/634ab817319f231d0db6e75e
 //delete message
 #DELETE http://localhost:8080/api/message/{{msgId}}
 DELETE http://localhost:8080/api/message/634ad2a05a7e1578ce47a5f6
+
+###
+//Lấy N message mới nhất trong một group mà người dùng tham gia (pagination with page và step)
+//ví dụ: arr=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
+//pagination(page = 0, step = 5) => [1,2,3,4,5]
+//pagination(page = 1, step = 5) => [6,7,8,9,10]
+//pagination(page = 3, step = 5) => [11,12,13,14,15]
+//Trả về list có đối tượng như sau
+{
+  "success": true,
+  "data": {
+    "message": [  // 10 tin nhắn gần nhất của app (pagination with page = 0 and step = 10)
+      {
+        ... các thuộc tính của message,
+        "user": {} // user gửi tin nhắn này
+      },
+      {},
+      {},
+      ...
+    ], 
+  }
+
+}
+

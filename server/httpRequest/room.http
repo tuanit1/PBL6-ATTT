@@ -29,3 +29,24 @@ GET http://localhost:8080/api/room/102190029
 //delete room
 #DELETE http://localhost:8080/api/room/{{rId}}
 DELETE http://localhost:8080/api/room/{{rid}}
+
+###
+//Lấy tất cả các room mà user tham gia (private và group)
+//Trả về list có đối tượng như sau
+{
+  "success": true
+  "data": {
+    "room": {}, // đối tượng room
+    "message": [  // 10 tin nhắn gần nhất của app (pagination with page = 0 and step = 10)
+      {
+        ... các thuộc tính của message,
+        "user": {} // user gửi tin nhắn này
+      },
+      {},
+      {},
+      ...
+    ], 
+    "user": {} // nếu room.type == private thì user này đối phương, nếu room.type == group thì user = null  
+  }
+}
+
