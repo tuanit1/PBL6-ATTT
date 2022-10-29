@@ -12,11 +12,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN
   "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPBQsJdUtRvv2fgMH4600MAsOLZIUZsFsXU4WqAc6NdQ&s"
 }
 
-###
+###2
 //get all user
 GET http://localhost:8080/api/user/
 
-###
+###3
 //delete room
 #DELETE http://localhost:8080/api/user/{{uid}}
 DELETE http://localhost:8080/api/user/{{uid}}
