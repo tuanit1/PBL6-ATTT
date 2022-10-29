@@ -1,4 +1,24 @@
+#1
 //create participant
 #POST http://localhost:8080/api/participant/:userId&:roomId
 POST http://localhost:8080/api/participant/102190030&634ab817319f231d0db6e75e
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
+
+###2
+//get All Participant
+#GET http://localhost:8080/api/participant/
+GET http://localhost:8080/api/participant/
+
+###3
+//update Participant
+#PUT http://localhost:8080/api/participant/{{participantId}}
+PUT http://localhost:8080/api/participant/635d281a8900a4d1a2ce057c
+content-type: Application/json
+
+{
+  "nickname": "wibu",
+  "isAdmin": false,
+  "allowSendMSG": true,
+  "allowSendFile": true,
+  "allowViewFile": true
+}

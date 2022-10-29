@@ -14,6 +14,21 @@ const ParticipantSchema = new Schema({
         type: Date,
         require: true
     },
+    allowSendMSG: {
+        type: Boolean,
+        require: false,
+        default: true
+    },
+    allowSendFile: {
+        type: Boolean,
+        require: false,
+        default: true
+    },
+    allowViewFile: {
+        type: Boolean,
+        require: false,
+        default: true
+    },
     user_id: {
         type: Schema.Types.ObjectId,
         ref: "user"
