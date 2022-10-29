@@ -2,9 +2,6 @@ const express = require('express')
 const router = express.Router()
 const participantController = require('../controller/participant')
 
-const Room = require('../models/Room')
-const User = require('../models/User')
-const Participant = require('../models/Participant')
 // @route Post api/user
 // @desc Create participant
 router.post('/:userId&:roomId', participantController.createParticipant)
