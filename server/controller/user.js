@@ -51,11 +51,13 @@ const createUser = async (req, res) => {
         res.json({
             success: true,
             message: 'Create user successfully',
-            id: newUser.user_id,
-            name: newUser.name,
-            age: newUser.age,
-            phone: newUser.phone,
-            image: newUser.image,
+            data: {
+                id: newUser.user_id,
+                name: newUser.name,
+                age: newUser.age,
+                phone: newUser.phone,
+                image: newUser.image,
+            }
         })
     } catch (e) {
         return res
@@ -73,7 +75,7 @@ const getUser = async (req, res) => {
         return res
             .json({
                 success: true,
-                allUser
+                data: allUser
             })
     } catch (e) {
         return res
@@ -126,7 +128,7 @@ const deleteUser = async (req, res) => {
                     success: false,
                     message: "User not exist"
                 })
-        res.json({success: true, deleteUser})
+        res.json({success: true, data: deleteUser})
     } catch (e) {
         return res.status(500).json({ success: false, message: "" + e });
     }

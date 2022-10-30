@@ -67,11 +67,13 @@ const createMessage = async (req, res) => {
         res.json({
             success: true,
             message: 'Create message successfully',
-            user: user.name,
-            room: room.name,
-            text: newMessage.message,
-            type: newMessage.type,
-            time: newMessage.time,
+            data: {
+                user: user.name,
+                room: room.name,
+                text: newMessage.message,
+                type: newMessage.type,
+                time: newMessage.time,
+            }
         })
     } catch (e) {
         return res
@@ -86,7 +88,7 @@ const createMessage = async (req, res) => {
 const getMessage = async (req, res) => {
     try {
         const allMessage = await Message.find({})
-        res.json({success: true, allMessage})
+        res.json({success: true, data: allMessage})
     } catch (e) {
         res.status(500).json({success: false, message: e})
     }
@@ -104,7 +106,7 @@ const getMessageByRoomId = async (req, res) => {
             })
     try {
         const allMessage = await Message.find({room_id: roomId})
-        res.json({success: true, allMessage})
+        res.json({success: true, data: allMessage})
     } catch (e) {
         res.status(500).json({success: false, message: e})
     }
@@ -127,7 +129,7 @@ const getMessageByRoomIdWithPagination = async (req, res) => {
             .find({room_id: roomId})
             .skip((perPage * page) - perPage)
             .limit(perPage)
-        res.json({success: true, messages})
+        res.json({success: true, data: messages})
     } catch (e) {
         console.log(e)
         res.status(500).json({success: false, message: e})
@@ -184,7 +186,7 @@ const deleteMessage = async (req, res) => {
         res.json({
             success: true,
             message: "Deleted!",
-            deleteMessage: deleteMsg
+            data: deleteMsg
         })
     } catch (e) {
         return res
