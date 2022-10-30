@@ -1,11 +1,11 @@
 const User = require('../models/User')
 const Message = require("../models/Message");
 const Participant = require("../models/Participant");
+const buffer = require("buffer");
 
 const createUser = async (req, res) => {
     const {user_id, name, age, phone, image} = req.body
-
-
+    //simple validate
     if (!user_id)
         return res
             .status(400)
@@ -22,7 +22,6 @@ const createUser = async (req, res) => {
                 message: "User have already existed!"
             })
     }
-
     if (!name)
         return res
             .status(400)
@@ -38,15 +37,20 @@ const createUser = async (req, res) => {
                     success: false,
                     message: "phone must be 10 numbers"
                 })
+    //base64
+    let name_code = Buffer.from(name).toString('base64')
+    let age_code = (age) ? Buffer.from(age.toString()).toString('base64') : Buffer.from('0').toString('base64')
+    let phone_code = (phone) ? Buffer.from(phone).toString('base64') : Buffer.from('0000000000').toString('base64')
+    let image_code = (image) ? Buffer.from(image).toString('base64') : Buffer.from('https://thuthuatnhanh.com/wp-content/uploads/2020/09/avatar-trang-cuc-doc.jpg').toString('base64')
     try {
         const newUser = new User({
             user_id: user_id,
-            name: name,
-            age: age | 0,
-            phone: phone | '0000000000',
-            image: image | 'https://thuthuatnhanh.com/wp-content/uploads/2020/09/avatar-trang-cuc-doc.jpg'
+            name: name_code,
+            age: age_code,
+            phone: phone_code,
+            image: image_code
         })
-        console.log(newUser.user_id)
+        console.log(newUser)
         await newUser.save()
         res.json({
             success: true,

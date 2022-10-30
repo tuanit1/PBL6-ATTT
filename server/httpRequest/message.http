@@ -1,12 +1,12 @@
 //create message
 #1
 #POST http://localhost:8080/api/message/{{userId}}&{{roomId}}
-POST http://localhost:8080/api/message/102190029&635d281a8900a4d1a2ce057a
+POST http://localhost:8080/api/message/102190030&635d281a8900a4d1a2ce057a
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
 
 {
-  "message": "this is nguyen",
+  "message": "test ma hoa",
   "type": "text"
 }
 

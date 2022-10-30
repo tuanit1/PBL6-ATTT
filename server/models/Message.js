@@ -12,7 +12,8 @@ const MessageSchema = new Schema({
     },
     type: {
         type: String,
-        enum: ['text','img','video']
+        require: true,
+        default: 'text'
     },
     user_id: {
         type: Schema.Types.ObjectId,
