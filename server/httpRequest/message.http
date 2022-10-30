@@ -1,26 +1,37 @@
 //create message
+#1
 #POST http://localhost:8080/api/message/{{userId}}&{{roomId}}
-POST http://localhost:8080/api/message/102190029&634ad102b48fbd4e6e2b5185
+POST http://localhost:8080/api/message/102190029&635d281a8900a4d1a2ce057a
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
 
 {
-  "message": "test",
+  "message": "this is nguyen",
   "type": "text"
 }
 
 ###
+#2
 //get all message
 GET http://localhost:8080/api/message/
 
 
 ###
+#3
 //get all message by roomId
-#GET http://localhost:8080/api/message/{{roomId}}
-GET http://localhost:8080/api/message/634ab817319f231d0db6e75e
+#GET http://localhost:8080/api/message/room/{{roomId}}
+GET http://localhost:8080/api/message/room/634ad102b48fbd4e6e2b5185
+
+###
+#4
+//get pagination
+#GET http://localhost:8080/api/message/page/{{page}}&{{roomId}}
+GET http://localhost:8080/api/message/page/1&634ab817319f231d0db6e75e
 
 
 ###
+#5
 //delete message
 #DELETE http://localhost:8080/api/message/{{msgId}}
 DELETE http://localhost:8080/api/message/634ad2a05a7e1578ce47a5f6
+

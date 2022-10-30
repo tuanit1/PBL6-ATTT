@@ -1,3 +1,4 @@
+#1
 //create room group
 #POST http://localhost:8080/api/room/userId
 POST http://localhost:8080/api/room/102190030
@@ -10,22 +11,47 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN
 }
 
 ###
+#2
 //create room private
 #POST http://localhost:8080/api/room/private/userId&receiveId
 POST http://localhost:8080/api/room/private/102190029&102190030
 
 
 ###
+#3
 //get all room
 GET http://localhost:8080/api/room/
 
 
 ###
+#4
 //get all room by userId
 #GET http://localhost:8080/api/room/{{userId}}
 GET http://localhost:8080/api/room/102190029
 
 ###
+#5
 //delete room
 #DELETE http://localhost:8080/api/room/{{rId}}
-DELETE http://localhost:8080/api/room/{{rid}}
+DELETE http://localhost:8080/api/room/634ad102b48fbd4e6e2b5185
+
+###
+//Lấy tất cả các room mà user tham gia (private và group)
+//Trả về list có đối tượng như sau
+#{
+#  "success": true
+#  "data": {
+#    "room": {}, // đối tượng room
+#    "message": [  // 10 tin nhắn gần nhất của app (pagination with page = 0 and step = 10)
+#      {
+#        ... các thuộc tính của message,
+#        "user": {} // user gửi tin nhắn này
+#      },
+#      {},
+#      {},
+#      ...
+#    ],
+#    "user": {} // nếu room.type == private thì user này đối phương, nếu room.type == group thì user = null
+#  }
+#}
+
