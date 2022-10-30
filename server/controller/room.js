@@ -2,6 +2,7 @@ const Message = require(`../models/Message`)
 const User = require("../models/User");
 const Room = require("../models/Room");
 const Participant = require("../models/Participant");
+const {json} = require("express");
 
 const createRoomPublic = async (req, res) => {
     const {name, image_ic} = req.body
@@ -23,14 +24,18 @@ const createRoomPublic = async (req, res) => {
                 success: false,
                 message: "User is not existed!"
             })
+    //base64
+    let name_code = Buffer.from(name).toString('base64')
+    let image_ic_code = (image_ic) ? Buffer.from(image_ic).toString('base64') : Buffer.from('https://png.pngtree.com/element_our/png_detail/20181021/group-avatar-icon-design-vector-png_141882.jpg').toString('base64')
+    let nickname_code = Buffer.from(user.name).toString('base64')
     try {
         const newRoom = new Room({
-            name: name,
+            name: name_code,
             type: "group",
-            image_ic: image_ic | 'https://png.pngtree.com/element_our/png_detail/20181021/group-avatar-icon-design-vector-png_141882.jpg'
+            image_ic: image_ic_code
         })
         const newParticipant = new Participant({
-            nickname: user.name,
+            nickname: nickname_code,
             isAdmin: true,
             timestamp: Date.now(),
             user_id: user,
@@ -41,7 +46,7 @@ const createRoomPublic = async (req, res) => {
         await newRoom.save()
         await user.save()
         await newParticipant.save()
-
+        console.log(json({newParticipant}))
         res.json({
             success: true,
             message: 'Create participant successfully',
@@ -49,7 +54,6 @@ const createRoomPublic = async (req, res) => {
                 name: newRoom.name,
                 type: newRoom.type,
                 image_ic: newRoom.image_ic,
-                newParticipant
             }
         })
     } catch (e) {
@@ -64,7 +68,8 @@ const createRoomPublic = async (req, res) => {
 }
 
 const createRoomPrivate = async (req, res) => {
-    const {userId,receiverId} = req.params
+    const {userId, receiverId} = req.params
+    //validate
     const user = await User.findOne({user_id: userId})
     if (!user)
         return res
@@ -81,22 +86,28 @@ const createRoomPrivate = async (req, res) => {
                 success: false,
                 message: "reciever is not existed!"
             })
+    //base64
+    let name_code = Buffer.from('private').toString('base64')
+    let image_ic_code = Buffer.from('https://png.pngtree.com/element_our/png_detail/20181021/group-avatar-icon-design-vector-png_141882.jpg').toString('base64')
+    let sender_code = Buffer.from(user.name).toString('base64')
+    let receiver_code = Buffer.from(receiver.name).toString('base64')
+
     try {
         const newRoom = new Room({
-            name: 'private',
+            name: name_code,
             type: 'private',
-            image_ic: 'https://png.pngtree.com/element_our/png_detail/20181021/group-avatar-icon-design-vector-png_141882.jpg'
+            image_ic: image_ic_code
         })
         const sender = new Participant({
-            nickname: user.name,
+            nickname: sender_code,
             isAdmin: true,
             timestamp: Date.now(),
             user_id: user,
             room_id: newRoom
         })
         const receiver_participant = new Participant({
-            nickname: receiver.name,
-            isAdmin: false,
+            nickname: receiver_code,
+            isAdmin: true,
             timestamp: Date.now(),
             user_id: receiver,
             room_id: newRoom
@@ -112,8 +123,7 @@ const createRoomPrivate = async (req, res) => {
         await receiver_participant.save()
         res.json({
             success: true,
-            message: 'Create participant successfully',
-            data : {
+            data: {
                 name: newRoom.name,
                 type: newRoom.type,
                 image_ic: newRoom.image_ic,
@@ -149,7 +159,7 @@ const getRoom = async (req, res) => {
 
 const getRoomByUserId = async (req, res) => {
     const {userId} = req.params
-    const user = await User.findOne({user_id:userId})
+    const user = await User.findOne({user_id: userId})
     if (!user) {
         return res
             .status(404)
@@ -158,6 +168,7 @@ const getRoomByUserId = async (req, res) => {
                 message: "User is not existing!"
             })
     }
+
     try {
         let participants = []
         for (let p of user.participants) {
@@ -175,6 +186,14 @@ const getRoomByUserId = async (req, res) => {
                         skip: 0
                     }
                 })
+            if (room)
+                if (room.type === 'private' && room.name === 'private')
+                    for (let pt of room.participants) {
+                        let joiner = await Participant.findById(pt)
+                        if (joiner.user_id.toString() !== user._id.toString()) {
+                            room.name = joiner.nickname
+                        }
+                    }
             rooms.push(room)
         }
         return res
@@ -183,6 +202,7 @@ const getRoomByUserId = async (req, res) => {
                 data: rooms
             })
     } catch (e) {
+        console.log(e)
         return res
             .status(500)
             .json({
@@ -210,7 +230,7 @@ const deleteRoom = async (req, res) => {
         if (room.messages) {
             room.messages.map(async (item) => {
                 let msg = await Message.findById(item._id.toString())
-                if (msg){
+                if (msg) {
                     msg.room_id = undefined
                     msg.save()
                 }
@@ -225,7 +245,7 @@ const deleteRoom = async (req, res) => {
                 }
             })
         }
-        const deleteRoom =await Room.findOneAndDelete(roomDeleteCondition)
+        const deleteRoom = await Room.findOneAndDelete(roomDeleteCondition)
         if (!deleteRoom)
             return res
                 .status(401)
@@ -235,8 +255,8 @@ const deleteRoom = async (req, res) => {
                 })
         res.json({success: true, data: deleteRoom})
     } catch (e) {
-        return res.status(500).json({ success: false, message: e });
+        return res.status(500).json({success: false, message: e});
     }
 }
 
-module.exports = { createRoomPublic, createRoomPrivate, getRoom, getRoomByUserId, deleteRoom };
+module.exports = {createRoomPublic, createRoomPrivate, getRoom, getRoomByUserId, deleteRoom};

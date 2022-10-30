@@ -14,6 +14,7 @@ const createMessage = async (req, res) => {
                 success: false,
                 message: "message is require!"
             })
+    message_code = Buffer.from(message).toString('base64')
     if (!type || !types.includes(type))
         return res
             .status(400)
@@ -21,7 +22,7 @@ const createMessage = async (req, res) => {
                 success: false,
                 message: "choose the type!"
             })
-
+    type_code = Buffer.from(type).toString('base64')
     const {userId, roomId} = req.params
 
     const user = await User.findOne({user_id: userId})
@@ -41,8 +42,6 @@ const createMessage = async (req, res) => {
                 success: false,
                 message: "Room is not existing!"
             })
-    console.log(1)
-    console.log({user_id: user._id, room_id: roomId})
     const participant = await Participant.findOne({user_id: user._id, room_id: roomId})
     if (!participant)
         return res
@@ -53,9 +52,9 @@ const createMessage = async (req, res) => {
             })
     try {
         const newMessage = new Message({
-            message: message,
+            message: message_code,
             time: Date.now(),
-            type,
+            type: type_code,
             user_id: user,
             room_id: room
         })

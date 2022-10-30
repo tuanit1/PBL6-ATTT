@@ -12,7 +12,7 @@ const UserSchema = new Schema({
         require: true
     },
     age: {
-        type: Number,
+        type: String,
         require: false
     },
     phone: {
@@ -21,7 +21,7 @@ const UserSchema = new Schema({
     },
     image: {
         type: String,
-        require: false
+        require: false,
     },
     messages: [{
         type: Schema.Types.ObjectId,
