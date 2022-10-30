@@ -46,14 +46,16 @@ const createParticipant = async (req, res) => {
         res.json({
             success: true,
             message: 'Create room successfully',
-            user: user.name,
-            room: room.name,
-            nickname: newParticipant.nickname,
-            isAdmin: newParticipant.isAdmin,
-            timestamp: newParticipant.timestamp,
-            allowSendMSG: newParticipant.allowSendMSG,
-            allowSendFile: newParticipant.allowSendFile,
-            allowViewFile: newParticipant.allowViewFile,
+            data: {
+                user: user.name,
+                room: room.name,
+                nickname: newParticipant.nickname,
+                isAdmin: newParticipant.isAdmin,
+                timestamp: newParticipant.timestamp,
+                allowSendMSG: newParticipant.allowSendMSG,
+                allowSendFile: newParticipant.allowSendFile,
+                allowViewFile: newParticipant.allowViewFile,
+            }
         })
     } catch (e) {
         return res
@@ -71,7 +73,7 @@ const getParticipant = async (req, res) => {
         return res
             .json({
                 success: true,
-                allParticipant
+                data: allParticipant
             })
     } catch (e) {
         return res
@@ -123,7 +125,7 @@ const updateParticipant = async (req, res) => {
         res.json({
             success: true,
             message: "Updated!",
-            updatedParticipant
+            data: updatedParticipant
         })
     } catch (e) {
         return res.status(500).json({ success: false, message: "" + error });
@@ -177,7 +179,7 @@ const deleteParticipant = async (req, res) => {
                     success: false,
                     message: "Room not exist"
                 })
-        res.json({success: true, deleteParticipant})
+        res.json({success: true, data: deleteParticipant})
     } catch (e) {
         return res.status(500).json({ success: false, message: e });
     }

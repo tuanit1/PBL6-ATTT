@@ -45,10 +45,12 @@ const createRoomPublic = async (req, res) => {
         res.json({
             success: true,
             message: 'Create participant successfully',
-            name: newRoom.name,
-            type: newRoom.type,
-            image_ic: newRoom.image_ic,
-            newParticipant
+            data: {
+                name: newRoom.name,
+                type: newRoom.type,
+                image_ic: newRoom.image_ic,
+                newParticipant
+            }
         })
     } catch (e) {
         console.log(e)
@@ -111,9 +113,11 @@ const createRoomPrivate = async (req, res) => {
         res.json({
             success: true,
             message: 'Create participant successfully',
-            name: newRoom.name,
-            type: newRoom.type,
-            image_ic: newRoom.image_ic,
+            data : {
+                name: newRoom.name,
+                type: newRoom.type,
+                image_ic: newRoom.image_ic,
+            }
         })
     } catch (e) {
         return res
@@ -131,7 +135,7 @@ const getRoom = async (req, res) => {
         return res
             .json({
                 success: true,
-                allRoom
+                data: allRoom
             })
     } catch (e) {
         return res
@@ -176,7 +180,7 @@ const getRoomByUserId = async (req, res) => {
         return res
             .json({
                 success: true,
-                rooms
+                data: rooms
             })
     } catch (e) {
         return res
@@ -229,7 +233,7 @@ const deleteRoom = async (req, res) => {
                     success: false,
                     message: "Room not exist"
                 })
-        res.json({success: true, deleteRoom})
+        res.json({success: true, data: deleteRoom})
     } catch (e) {
         return res.status(500).json({ success: false, message: e });
     }
