@@ -33,5 +33,5 @@ GET http://localhost:8080/api/message/page/1&634ab817319f231d0db6e75e
 #5
 //delete message
 #DELETE http://localhost:8080/api/message/{{msgId}}
-DELETE http://localhost:8080/api/message/634ad2a05a7e1578ce47a5f6
+DELETE http://localhost:8080/api/message/634ad29c5a7e1578ce47a5f0
 

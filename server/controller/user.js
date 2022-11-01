@@ -56,7 +56,7 @@ const createUser = async (req, res) => {
             success: true,
             message: 'Create user successfully',
             data: {
-                id: newUser.user_id,
+                user_id: newUser.user_id,
                 name: newUser.name,
                 age: newUser.age,
                 phone: newUser.phone,
