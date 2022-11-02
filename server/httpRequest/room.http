@@ -27,7 +27,7 @@ GET http://localhost:8080/api/room/
 #4
 //get all room by userId
 #GET http://localhost:8080/api/room/{{userId}}
-GET http://localhost:8080/api/room/102190029
+GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2
 
 ###
 #5
