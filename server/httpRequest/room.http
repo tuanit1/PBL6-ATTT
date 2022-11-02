@@ -27,7 +27,7 @@ GET http://localhost:8080/api/room/
 #4
 //get all room by userId
 #GET http://localhost:8080/api/room/{{userId}}
-GET http://localhost:8080/api/room/102190029
+GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2
 
 ###
 #5
@@ -42,7 +42,7 @@ DELETE http://localhost:8080/api/room/634ad102b48fbd4e6e2b5185
 #  "success": true
 #  "data": {
 #    ... các thuộc tính của room
-#    "message": [  // 10 tin nhắn gần nhất của app (pagination with page = 0 and step = 10)
+#    "message": [  // 10 tin nhắn gần nhất của room (pagination with page = 0 and step = 10)
 #      {
 #        ... các thuộc tính của message,
 #        "user": {} // user gửi tin nhắn này
@@ -52,6 +52,69 @@ DELETE http://localhost:8080/api/room/634ad102b48fbd4e6e2b5185
 #      ...
 #    ],
 #    "user": {} // nếu room.type == private thì user này đối phương, nếu room.type == group thì user = null
+#    "particpant: {} //particpant.user_id = uid
 #  }
 #}
+
+{
+  data: {
+    ... các thuộc tính của room,
+    "message": [],
+    "user": {},
+    "participant": {}
+  }
+}
+
+"success": true,
+  "data": [
+    {
+      "room_id": "635e3553b6faacb06ced6782",
+      "name": "R1JPVVBPRjMx",
+      "image_ic": "aHR0cHM6Ly9lbmNyeXB0ZWQtdGJuMC5nc3RhdGljLmNvbS9pbWFnZXM/cT10Ym46QU5kOUdjUlBCUXNKZFV0UnZ2MmZnTUg0NjAwTUFzT0xaSVVac0ZzWFU0V3FBYzZOZFEmcw==",
+      "type": "group",
+      "messages": [
+        {
+          "_id": "6361e585d609d4c758cde92f",
+          "message": "dGV4dDE=",
+          "time": "2022-11-02T03:35:33.607Z",
+          "type": "dGV4dA==",
+          "user_id": "6361dfbad609d4c758cde8e1",
+          "room_id": "635e3553b6faacb06ced6782",
+          "__v": 0
+        },
+        {
+          "_id": "6361e58ad609d4c758cde936",
+          "message": "dGV4dDI=",
+          "time": "2022-11-02T03:35:38.842Z",
+          "type": "dGV4dA==",
+          "user_id": "6361dfbad609d4c758cde8e1",
+          "room_id": "635e3553b6faacb06ced6782",
+          "__v": 0
+        },
+        {
+          "_id": "6361e58ed609d4c758cde93d",
+          "message": "dGV4dDM=",
+          "time": "2022-11-02T03:35:42.888Z",
+          "type": "dGV4dA==",
+          "user_id": "6361dfbad609d4c758cde8e1",
+          "room_id": "635e3553b6faacb06ced6782",
+          "__v": 0
+        }
+      ],
+      "user": null,
+      "participant": {
+        "_id": "6361e21bd609d4c758cde908",
+        "nickname": "ZEhWaGJnPT0=",
+        "isAdmin": false,
+        "timestamp": "2022-11-02T03:20:59.154Z",
+        "allowSendMSG": true,
+        "allowSendFile": true,
+        "allowViewFile": true,
+        "user_id": "6361dfbad609d4c758cde8e1",
+        "room_id": "635e3553b6faacb06ced6782",
+        "__v": 0
+      }
+    }
+  ]
+}
 
