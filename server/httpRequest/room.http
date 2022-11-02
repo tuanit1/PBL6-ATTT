@@ -41,7 +41,7 @@ DELETE http://localhost:8080/api/room/634ad102b48fbd4e6e2b5185
 #{
 #  "success": true
 #  "data": {
-#    "room": {}, // đối tượng room
+#    ... các thuộc tính của room
 #    "message": [  // 10 tin nhắn gần nhất của app (pagination with page = 0 and step = 10)
 #      {
 #        ... các thuộc tính của message,
