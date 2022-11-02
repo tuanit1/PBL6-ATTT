@@ -97,7 +97,7 @@ const deleteUser = async (req, res) => {
             _id: req.params.uid,
             user: req.userId
         }
-        const user = await User.findOne({user_id:roomDeleteCondition._id})
+        const user = await User.findOne({user_id:userDeleteCondition._id})
         if (!user) {
             return res
                 .status(401)
