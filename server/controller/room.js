@@ -24,18 +24,14 @@ const createRoomPublic = async (req, res) => {
                 success: false,
                 message: "User is not existed!"
             })
-    //base64
-    let name_code = Buffer.from(name).toString('base64')
-    let image_ic_code = (image_ic) ? Buffer.from(image_ic).toString('base64') : Buffer.from('https://png.pngtree.com/element_our/png_detail/20181021/group-avatar-icon-design-vector-png_141882.jpg').toString('base64')
-    let nickname_code = Buffer.from(user.name).toString('base64')
     try {
         const newRoom = new Room({
-            name: name_code,
+            name: name,
             type: "group",
-            image_ic: image_ic_code
+            image_ic: image_ic | 'https://png.pngtree.com/element_our/png_detail/20181021/group-avatar-icon-design-vector-png_141882.jpg'
         })
         const newParticipant = new Participant({
-            nickname: nickname_code,
+            nickname: user.name,
             isAdmin: true,
             timestamp: Date.now(),
             user_id: user,
@@ -86,28 +82,22 @@ const createRoomPrivate = async (req, res) => {
                 success: false,
                 message: "reciever is not existed!"
             })
-    //base64
-    let name_code = Buffer.from('private').toString('base64')
-    let image_ic_code = Buffer.from('https://png.pngtree.com/element_our/png_detail/20181021/group-avatar-icon-design-vector-png_141882.jpg').toString('base64')
-    let sender_code = Buffer.from(user.name).toString('base64')
-    let receiver_code = Buffer.from(receiver.name).toString('base64')
-
     try {
         const newRoom = new Room({
-            name: name_code,
+            name: 'private',
             type: 'private',
-            image_ic: image_ic_code
+            image_ic: 'https://png.pngtree.com/element_our/png_detail/20181021/group-avatar-icon-design-vector-png_141882.jpg'
         })
         const sender = new Participant({
-            nickname: sender_code,
+            nickname: user.name,
             isAdmin: true,
             timestamp: Date.now(),
             user_id: user,
             room_id: newRoom
         })
         const receiver_participant = new Participant({
-            nickname: receiver_code,
-            isAdmin: true,
+            nickname: receiver.name,
+            isAdmin: false,
             timestamp: Date.now(),
             user_id: receiver,
             room_id: newRoom
@@ -123,7 +113,8 @@ const createRoomPrivate = async (req, res) => {
         await receiver_participant.save()
         res.json({
             success: true,
-            data: {
+            message: 'Create participant successfully',
+            data : {
                 name: newRoom.name,
                 type: newRoom.type,
                 image_ic: newRoom.image_ic,
@@ -263,7 +254,6 @@ const getRoomGroupByUserId = async (req, res) => {
                 data: data
             })
     } catch (e) {
-        console.log(e)
         return res
             .status(500)
             .json({
