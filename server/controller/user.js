@@ -93,11 +93,8 @@ const getUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        userDeleteCondition = {
-            _id: req.params.uid,
-            user: req.userId
-        }
-        const user = await User.findOne({user_id:userDeleteCondition._id})
+
+        const user = await User.findOne({user_id:req.params.uid})
         if (!user) {
             return res
                 .status(401)
@@ -105,6 +102,10 @@ const deleteUser = async (req, res) => {
                     success: false,
                     message: "User not found"
                 })
+        }
+        let userDeleteCondition = {
+            _id: user._id,
+            user: req.userId
         }
         if (user.messages) {
             user.messages.map(async (item) => {
