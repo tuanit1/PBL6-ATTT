@@ -175,7 +175,7 @@ const getRoomByUserId = async (req, res) => {
             let participant = await Participant.findById(p)
             participants.push(participant)
         }
-        let list_of_room = []
+        let data = []
         let room = {room: null, messages: [null], user: null}
         for (let p of participants) {
             let roomDB = await Room.findById(p.room_id)
@@ -206,12 +206,13 @@ const getRoomByUserId = async (req, res) => {
                 }
             }
             console.log(room)
-            list_of_room.push(room)
+            data.push(room)
         }
         return res
             .json({
                 success: true,
-                data: list_of_room
+                message: 'get rooms successfull',
+                data: data
             })
     } catch (e) {
         console.log(e)
