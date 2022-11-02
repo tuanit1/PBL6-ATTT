@@ -27,11 +27,9 @@ const createParticipant = async (req, res) => {
                 success: false,
                 message: "Can not add member to private room!"
             })
-    //base64
-    let nickname_code = Buffer.from(user.name).toString('base64')
     try {
         const newParticipant = new Participant({
-            nickname: nickname_code,
+            nickname: user.name,
             isAdmin: false,
             timestamp: Date.now(),
             allowSendMSG: true,
