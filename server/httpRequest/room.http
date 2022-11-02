@@ -10,27 +10,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN
   "image_ic": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPBQsJdUtRvv2fgMH4600MAsOLZIUZsFsXU4WqAc6NdQ&s"
 }
 
-###
-#2
+###2
 //create room private
 #POST http://localhost:8080/api/room/private/userId&receiveId
 POST http://localhost:8080/api/room/private/102190030&102190031
 
 
-###
-#3
+###3
 //get all room
 GET http://localhost:8080/api/room/
 
 
-###
-#4
-//get all room by userId
-#GET http://localhost:8080/api/room/{{userId}}
-GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2
+###4
+//get private room by userId
+#GET http://localhost:8080/api/room//private/{{userId}}
+GET http://localhost:8080/api/room/private/6Uj630yjijSYLAEvQ1WL90Tfdra2
 
-###
-#5
+###5
+//get group room by userId
+#GET http://localhost:8080/api/room/group/{{userId}}
+GET http://localhost:8080/api/room/group/6Uj630yjijSYLAEvQ1WL90Tfdra2
+
+###6
 //delete room
 #DELETE http://localhost:8080/api/room/{{rId}}
 DELETE http://localhost:8080/api/room/634ad102b48fbd4e6e2b5185
