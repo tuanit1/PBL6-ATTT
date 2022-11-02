@@ -175,31 +175,43 @@ const getRoomByUserId = async (req, res) => {
             let participant = await Participant.findById(p)
             participants.push(participant)
         }
-        let rooms = []
+        let list_of_room = []
+        let room = {room: null, messages: [null], user: null}
         for (let p of participants) {
-            let room = await Room.findById(p.room_id)
+            let roomDB = await Room.findById(p.room_id)
                 .populate({
                     path: 'messages',
                     options: {
                         limit: 10,
                         sort: {created: -1},
-                        skip: 0
+                        skip: 0,
                     }
                 })
-            if (room)
-                if (room.type === 'private' && room.name === 'private')
-                    for (let pt of room.participants) {
-                        let joiner = await Participant.findById(pt)
-                        if (joiner.user_id.toString() !== user._id.toString()) {
-                            room.name = joiner.nickname
-                        }
+            room.room = {
+                room_id: roomDB._id,
+                name: roomDB.name,
+                image_ic: roomDB.image_ic,
+                type: roomDB.type
+            }
+            room.messages = roomDB.messages
+            if (roomDB.type === 'group') {
+                room.user = null
+            }
+            else {
+                for (let pt of roomDB.participants) {
+                    let joiner = await Participant.findById(pt)
+                    if (joiner.user_id.toString() !== user._id.toString()) {
+                        room.user = await User.findById(joiner.user_id)
                     }
-            rooms.push(room)
+                }
+            }
+            console.log(room)
+            list_of_room.push(room)
         }
         return res
             .json({
                 success: true,
-                data: rooms
+                data: list_of_room
             })
     } catch (e) {
         console.log(e)
