@@ -135,10 +135,11 @@ const updateParticipant = async (req, res) => {
 const deleteParticipant = async (req, res) => {
     try {
         const participantDeleteCondition = {
-            _id: req.params.rid,
+            _id: req.params.participantId,
             user: req.userId
         }
-        const participant = await Room.findById(participantDeleteCondition._id)
+        console.log(participantDeleteCondition._id)
+        const participant = await Participant.findById(participantDeleteCondition._id)
         if (!participant) {
             return res
                 .status(401)
@@ -171,7 +172,7 @@ const deleteParticipant = async (req, res) => {
             room.participants = room.participants.filter(item => item._id.toString() !== participant._id.toString())
             room.save()
         }
-        const deleteParticipant =await Room.findOneAndDelete(participantDeleteCondition)
+        const deleteParticipant =await Participant.findOneAndDelete(participantDeleteCondition)
         if (!deleteParticipant)
             return res
                 .status(401)

@@ -12,7 +12,7 @@ GET http://localhost:8080/api/participant/
 ###3
 //update Participant
 #PUT http://localhost:8080/api/participant/{{participantId}}
-PUT http://localhost:8080/api/participant/635d281a8900a4d1a2ce057c
+PUT http://localhost:8080/api/participant/634ab817319f231d0db6e75f
 content-type: Application/json
 
 {
@@ -22,3 +22,8 @@ content-type: Application/json
   "allowSendFile": true,
   "allowViewFile": true
 }
+
+###4
+//delete Participant
+#DELETE http://localhost:8080/api/participant/{{participantId}}
+DELETE http://localhost:8080/api/participant/634ab817319f231d0db6e75f
