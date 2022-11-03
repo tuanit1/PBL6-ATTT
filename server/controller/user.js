@@ -28,14 +28,14 @@ const createUser = async (req, res) => {
                 success: false,
                 message: "name is require!"
             })
-    if (phone)
-        if (phone.length !== 10)
-            return res
-                .status(400)
-                .json({
-                    success: false,
-                    message: "phone must be 10 numbers"
-                })
+    // if (phone)
+    //     if (phone.length !== 10)
+    //         return res
+    //             .status(400)
+    //             .json({
+    //                 success: false,
+    //                 message: "phone must be 10 numbers"
+    //             })
     try {
         const newUser = new User({
             user_id: user_id,
