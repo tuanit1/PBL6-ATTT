@@ -17,6 +17,9 @@ router.get('/private/:userId', roomController.getRoomPrivateByUserId)
 //get public room by user
 router.get('/group/:userId', roomController.getRoomGroupByUserId)
 
+//get room by user
+router.get('/:userId', roomController.getRoomByUserId)
+
 //delete room
 router.delete('/:rid', roomController.deleteRoom)
 
