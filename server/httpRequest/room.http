@@ -32,6 +32,11 @@ GET http://localhost:8080/api/room/private/6Uj630yjijSYLAEvQ1WL90Tfdra2
 GET http://localhost:8080/api/room/group/6Uj630yjijSYLAEvQ1WL90Tfdra2
 
 ###6
+//get room by userId
+#GET http://localhost:8080/api/room/{{userId}}
+GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2
+
+###7
 //delete room
 #DELETE http://localhost:8080/api/room/{{rId}}
 DELETE http://localhost:8080/api/room/634ad102b48fbd4e6e2b5185
