@@ -263,6 +263,74 @@ const getRoomGroupByUserId = async (req, res) => {
     }
 }
 
+const getRoomByUserId = async (req, res) => {
+    const {userId} = req.params
+    const user = await User.findOne({user_id: userId})
+    if (!user) {
+        return res
+            .status(404)
+            .json({
+                success: false,
+                message: "User is not existing!"
+            })
+    }
+
+    try {
+        let participants = []
+        for (let p of user.participants) {
+            let participant = await Participant.findById(p)
+            participants.push(participant)
+        }
+        let data = []
+        let room = {room: null, messages: [null], user: null}
+        for (let p of participants) {
+            let roomDB = await Room.findById(p.room_id)
+                .populate({
+                    path: 'messages',
+                    options: {
+                        limit: 10,
+                        sort: {created: -1},
+                        skip: 0,
+                    }
+                })
+            room.room = {
+                room_id: roomDB._id,
+                name: roomDB.name,
+                image_ic: roomDB.image_ic,
+                type: roomDB.type
+            }
+            room.messages = roomDB.messages
+            if (roomDB.type === 'group') {
+                room.user = null
+            }
+            else {
+                for (let pt of roomDB.participants) {
+                    let joiner = await Participant.findById(pt)
+                    if (joiner.user_id.toString() !== user._id.toString()) {
+                        room.user = await User.findById(joiner.user_id)
+                    }
+                }
+            }
+            console.log(room)
+            data.push(room)
+        }
+        return res
+            .json({
+                success: true,
+                message: 'get rooms successfull',
+                data: data
+            })
+    } catch (e) {
+        console.log(e)
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: e
+            })
+    }
+}
+
 const deleteRoom = async (req, res) => {
     try {
         const roomDeleteCondition = {
@@ -310,4 +378,4 @@ const deleteRoom = async (req, res) => {
     }
 }
 
-module.exports = {createRoomPublic, createRoomPrivate, getRoom, getRoomPrivateByUserId, getRoomGroupByUserId, deleteRoom};
+module.exports = {createRoomPublic, createRoomPrivate, getRoom, getRoomPrivateByUserId, getRoomGroupByUserId, getRoomByUserId, deleteRoom};
