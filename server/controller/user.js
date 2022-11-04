@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const Message = require("../models/Message");
 const Participant = require("../models/Participant");
+const {get} = require("mongoose");
 
 const createUser = async (req, res) => {
     const {user_id, name, age, phone, image} = req.body
@@ -13,7 +14,7 @@ const createUser = async (req, res) => {
                 message: "user_id is require!"
             })
     const user = await User.findOne({user_id: user_id})
-    if (user){
+    if (user) {
         return res
             .status(400)
             .json({
@@ -87,10 +88,37 @@ const getUser = async (req, res) => {
     }
 }
 
+const getUserById = async (req, res) => {
+    const {uid} = req.params
+    console.log(uid)
+    const user = await User.findOne({user_id: uid})
+    if (!user) {
+        return res
+            .status(400)
+            .json({
+                success: false,
+                message: "User not found!"
+            })
+    }
+    try {
+        return res
+            .json({
+                success: true,
+                data: user
+            })
+    } catch (e) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: e
+            })
+    }
+}
+
 const deleteUser = async (req, res) => {
     try {
-
-        const user = await User.findOne({user_id:req.params.uid})
+        const user = await User.findOne({user_id: req.params.uid})
         if (!user) {
             return res
                 .status(401)
@@ -106,7 +134,7 @@ const deleteUser = async (req, res) => {
         if (user.messages) {
             user.messages.map(async (item) => {
                 let msg = await Message.findById(item._id.toString())
-                if (msg){
+                if (msg) {
                     msg.user_id = undefined
                     msg.save()
                 }
@@ -121,7 +149,7 @@ const deleteUser = async (req, res) => {
                 }
             })
         }
-        const deleteUser =await User.findOneAndDelete(userDeleteCondition)
+        const deleteUser = await User.findOneAndDelete(userDeleteCondition)
         if (!deleteUser)
             return res
                 .status(401)
@@ -131,8 +159,60 @@ const deleteUser = async (req, res) => {
                 })
         res.json({success: true, data: deleteUser})
     } catch (e) {
-        return res.status(500).json({ success: false, message: "" + e });
+        return res.status(500).json({success: false, message: "" + e});
     }
 }
 
-module.exports = { createUser, getUser, deleteUser }
+const deleteAllUser = async (req, res) => {
+    try {
+        const users = await User.find({})
+        let deletedUsers = []
+        for (let user of users) {
+            let userDeleteCondition = {
+                _id: user._id,
+                user: req.userId
+            }
+            if (user.messages) {
+                user.messages.map(async (item) => {
+                    let msg = await Message.findById(item._id.toString())
+                    if (msg) {
+                        msg.user_id = undefined
+                        msg.save()
+                    }
+                })
+            }
+            if (user.participants) {
+                user.participants.map(async (item) => {
+                    let participant = await Participant.findById(item._id.toString())
+                    if (participant) {
+                        participant.user_id = undefined
+                        participant.save()
+                    }
+                })
+            }
+            const deleteUser = await User.findOneAndDelete(userDeleteCondition)
+            if (!deleteUser)
+                return res
+                    .status(401)
+                    .json({
+                        success: false,
+                        message: "User not exist"
+                    })
+            deletedUsers.push(deleteUser)
+        }
+        return res
+            .json({
+                success: true,
+                data: deletedUsers
+            })
+    } catch (e) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: e
+            })
+    }
+}
+
+module.exports = {createUser, getUser, getUserById, deleteUser, deleteAllUser}

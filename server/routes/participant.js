@@ -14,4 +14,7 @@ router.put('/:participantId', participantController.updateParticipant)
 
 // delete participant
 router.delete('/:participantId', participantController.deleteParticipant)
+
+// delete all participant
+router.delete('/', participantController.deleteAllParticipant)
 module.exports = router

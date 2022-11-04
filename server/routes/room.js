@@ -23,4 +23,7 @@ router.get('/:userId', roomController.getRoomByUserId)
 //delete room
 router.delete('/:rid', roomController.deleteRoom)
 
+//delete all room
+router.delete('/', roomController.deleteAllRoom)
+
 module.exports = router
