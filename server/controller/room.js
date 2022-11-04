@@ -284,8 +284,8 @@ const getRoomByUserId = async (req, res) => {
             participants.push(participant)
         }
         let data = []
-        let room = {room: null, messages: [null], user: null}
         for (let p of participants) {
+            let room = {room: null, messages: [null], user: null}
             let roomDB = await Room.findById(p.room_id)
                 .populate({
                     path: 'messages',
@@ -313,7 +313,6 @@ const getRoomByUserId = async (req, res) => {
                     }
                 }
             }
-            console.log(room)
             data.push(room)
         }
         return res
