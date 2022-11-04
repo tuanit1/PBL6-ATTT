@@ -37,13 +37,19 @@ const createUser = async (req, res) => {
     //                 message: "phone must be 10 numbers"
     //             })
     try {
+        let age_s = (!age) ? 0 : age
+        console.log(age_s)
+        let image_s = (!image) ? 'https://thuthuatnhanh.com/wp-content/uploads/2020/09/avatar-trang-cuc-doc.jpg' : image
+        console.log(image_s)
+        let phone_s = (!phone) ? '0000000000' : phone
         const newUser = new User({
             user_id: user_id,
             name: name,
-            age: age | 0,
-            phone: phone | '0000000000',
-            image: image | 'https://thuthuatnhanh.com/wp-content/uploads/2020/09/avatar-trang-cuc-doc.jpg'
+            age: age_s,
+            phone: phone_s,
+            image: image_s
         })
+        console.log(newUser)
         await newUser.save()
         res.json({
             success: true,

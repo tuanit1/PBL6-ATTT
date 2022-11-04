@@ -5,10 +5,10 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
 
 {
-  "user_id": "102190032",
-  "name": "test2",
-  "age": 21,
-  "phone": "0123456729"
+  "user_id": "2ZFMFC9EXnbNFvjYLHoaHD8vcBq2",
+  "name": "aG9h",
+  "age": "MjE=",
+  "phone": "MDUyMjkxMjc0Mg=="
 }
 
 ###2
@@ -18,4 +18,4 @@ GET http://localhost:8080/api/user/
 ###3
 //delete user
 #DELETE http://localhost:8080/api/user/{{uid}}
-DELETE http://localhost:8080/api/user/iWjI0Q9b9XZYPQr3MZcc8pMLf5B2
+DELETE http://localhost:8080/api/user/2ZFMFC9EXnbNFvjYLHoaHD8vcBq2
