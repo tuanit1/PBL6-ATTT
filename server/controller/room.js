@@ -48,7 +48,7 @@ const createRoomPublic = async (req, res) => {
             success: true,
             message: 'Create participant successfully',
             data: {
-                id: newRoom._id,
+                _id: newRoom._id,
                 name: newRoom.name,
                 type: newRoom.type,
                 image_ic: newRoom.image_ic,
