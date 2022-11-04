@@ -25,10 +25,12 @@ const createRoomPublic = async (req, res) => {
                 message: "User is not existed!"
             })
     try {
+        let image_s = (!image_ic) ? '' : image_ic
+
         const newRoom = new Room({
             name: name,
             type: "group",
-            image_ic: image_ic | 'https://png.pngtree.com/element_our/png_detail/20181021/group-avatar-icon-design-vector-png_141882.jpg'
+            image_ic: image_s,
         })
         const newParticipant = new Participant({
             nickname: user.name,
@@ -42,11 +44,11 @@ const createRoomPublic = async (req, res) => {
         await newRoom.save()
         await user.save()
         await newParticipant.save()
-        console.log(json({newParticipant}))
         res.json({
             success: true,
             message: 'Create participant successfully',
             data: {
+                id: newRoom._id,
                 name: newRoom.name,
                 type: newRoom.type,
                 image_ic: newRoom.image_ic,
