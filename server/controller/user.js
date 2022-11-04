@@ -38,9 +38,7 @@ const createUser = async (req, res) => {
     //             })
     try {
         let age_s = (!age) ? 0 : age
-        console.log(age_s)
         let image_s = (!image) ? 'https://thuthuatnhanh.com/wp-content/uploads/2020/09/avatar-trang-cuc-doc.jpg' : image
-        console.log(image_s)
         let phone_s = (!phone) ? '0000000000' : phone
         const newUser = new User({
             user_id: user_id,
@@ -49,7 +47,6 @@ const createUser = async (req, res) => {
             phone: phone_s,
             image: image_s
         })
-        console.log(newUser)
         await newUser.save()
         res.json({
             success: true,
