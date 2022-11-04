@@ -38,8 +38,8 @@ const createUser = async (req, res) => {
     //             })
     try {
         let age_s = (!age) ? 0 : age
-        let image_s = (!image) ? 'https://thuthuatnhanh.com/wp-content/uploads/2020/09/avatar-trang-cuc-doc.jpg' : image
-        let phone_s = (!phone) ? '0000000000' : phone
+        let image_s = (!image) ? '' : image
+        let phone_s = (!phone) ? '' : phone
         const newUser = new User({
             user_id: user_id,
             name: name,
