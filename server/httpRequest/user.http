@@ -16,6 +16,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN
 GET http://localhost:8080/api/user/
 
 ###3
+//get user by id
+#GET http://localhost:8080/api/user/{{uid}}
+GET http://localhost:8080/api/user/A931rAdlZATBBnWaySfO2UuQO8v2
+
+###4
 //delete user
 #DELETE http://localhost:8080/api/user/{{uid}}
 DELETE http://localhost:8080/api/user/2ZFMFC9EXnbNFvjYLHoaHD8vcBq2
+
+###5
+//delete all user
+#DELETE http://localhost:8080/api/user/
+DELETE http://localhost:8080/api/user/

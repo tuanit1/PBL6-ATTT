@@ -149,26 +149,14 @@ const deleteMessage = async (req, res) => {
             })
     if (msg.user_id) {
         const user = await User.findById(msg.user_id)
-        if (!user)
-            return res
-                .status(404)
-                .json({
-                    success: false,
-                    message: "user not found"
-                })
-        user.messages = user.messages.filter(item => item._id.toString() !== msg._id.toString())
+        if (user)
+            user.messages = user.messages.filter(item => item._id.toString() !== msg._id.toString())
         user.save()
     }
     if (msg.room_id) {
         const room = await Room.findById(msg.room_id)
-        if (!room)
-            return res
-                .status(404)
-                .json({
-                    success: false,
-                    message: "room not found"
-                })
-        room.messages = room.messages.filter(item => item._id.toString() !== msg._id.toString())
+        if (room)
+            room.messages = room.messages.filter(item => item._id.toString() !== msg._id.toString())
         room.save()
     }
     try {
@@ -196,4 +184,42 @@ const deleteMessage = async (req, res) => {
     }
 }
 
-module.exports = { createMessage, getMessage, getMessageByRoomId, getMessageByRoomIdWithPagination, deleteMessage };
+const deleteAllMessage = async (req, res) => {
+    try {
+        const messages = await Message.find({})
+        let deletedMessages = []
+        for (let message of messages) {
+            const msgDeleteCondition = {
+                _id: message._id,
+                user: req.userId
+            }
+            if (message.user_id) {
+                const user = await User.findById(msg.user_id)
+                if (user)
+                    user.messages = user.messages.filter(item => item._id.toString() !== msg._id.toString())
+                user.save()
+            }
+            if (message.room_id) {
+                const room = await Room.findById(msg.room_id)
+                if (room)
+                    room.messages = room.messages.filter(item => item._id.toString() !== msg._id.toString())
+                room.save()
+            }
+            const deleteMsg = await Message.findOneAndDelete(msgDeleteCondition)
+            if (!deleteMsg) {
+                return res
+                    .status(401)
+                    .json({
+                        success: false,
+                        message: "message not found!"
+                    })
+            }
+            deletedMessages.push(deleteMsg)
+        }
+        res.json({success: true, data: deletedMessages})
+    } catch (e) {
+        res.status(500).json({success: false, message: e})
+    }
+}
+
+module.exports = { createMessage, getMessage, getMessageByRoomId, getMessageByRoomIdWithPagination, deleteMessage, deleteAllMessage };

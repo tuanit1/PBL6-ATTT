@@ -27,3 +27,8 @@ content-type: Application/json
 //delete Participant
 #DELETE http://localhost:8080/api/participant/{{participantId}}
 DELETE http://localhost:8080/api/participant/634ab817319f231d0db6e75f
+
+###5
+//delete all Participant
+#DELETE http://localhost:8080/api/participant/
+DELETE http://localhost:8080/api/participant/

@@ -17,4 +17,7 @@ router.get('/page/:page?&:roomId', messageController.getMessageByRoomIdWithPagin
 
 //Delete Message
 router.delete('/:msgId', messageController.deleteMessage)
+
+//Delete all Message
+router.delete('/', messageController.deleteAllMessage)
 module.exports = router

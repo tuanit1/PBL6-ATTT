@@ -121,14 +121,14 @@ const updateParticipant = async (req, res) => {
         if (!updatedParticipant)
             return res
                 .status(401)
-                .json({ success: false, message: "Participant not found" })
+                .json({success: false, message: "Participant not found"})
         res.json({
             success: true,
             message: "Updated!",
             data: updatedParticipant
         })
     } catch (e) {
-        return res.status(500).json({ success: false, message: "" + error });
+        return res.status(500).json({success: false, message: "" + error});
     }
 }
 
@@ -138,7 +138,6 @@ const deleteParticipant = async (req, res) => {
             _id: req.params.participantId,
             user: req.userId
         }
-        console.log(participantDeleteCondition._id)
         const participant = await Participant.findById(participantDeleteCondition._id)
         if (!participant) {
             return res
@@ -172,7 +171,7 @@ const deleteParticipant = async (req, res) => {
             room.participants = room.participants.filter(item => item._id.toString() !== participant._id.toString())
             room.save()
         }
-        const deleteParticipant =await Participant.findOneAndDelete(participantDeleteCondition)
+        const deleteParticipant = await Participant.findOneAndDelete(participantDeleteCondition)
         if (!deleteParticipant)
             return res
                 .status(401)
@@ -182,8 +181,66 @@ const deleteParticipant = async (req, res) => {
                 })
         res.json({success: true, data: deleteParticipant})
     } catch (e) {
-        return res.status(500).json({ success: false, message: e });
+        return res.status(500).json({success: false, message: e});
     }
 }
 
-module.exports = { createParticipant, getParticipant, updateParticipant, deleteParticipant };
+const deleteAllParticipant = async (req, res) => {
+    try {
+        const participants = await Participant.find({})
+        let deletedParticipants = []
+        for (let participant of participants) {
+            const participantDeleteCondition = {
+                _id: participants._id,
+                user: req.userId
+            }
+            if (participant.user_id) {
+                const user = await User.findById(participant.user_id)
+                if (!user)
+                    return res
+                        .status(404)
+                        .json({
+                            success: false,
+                            message: "user not found"
+                        })
+                user.participants = user.participants.filter(item => item._id.toString() !== participant._id.toString())
+                user.save()
+            }
+            if (participant.room_id) {
+                const room = await Room.findById(participant.room_id)
+                if (!room)
+                    return res
+                        .status(404)
+                        .json({
+                            success: false,
+                            message: "room not found"
+                        })
+                room.participants = room.participants.filter(item => item._id.toString() !== participant._id.toString())
+                room.save()
+            }
+            const deleteParticipant = await Participant.findOneAndDelete(participantDeleteCondition)
+            if (!deleteParticipant)
+                return res
+                    .status(401)
+                    .json({
+                        success: false,
+                        message: "Room not exist"
+                    })
+            deletedParticipants.push(deleteParticipant)
+        }
+        return res
+            .json({
+                success: true,
+                data: deletedParticipants
+            })
+    } catch (e) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: e
+            })
+    }
+}
+
+module.exports = {createParticipant, getParticipant, updateParticipant, deleteParticipant, deleteAllParticipant};
