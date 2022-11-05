@@ -403,10 +403,12 @@ const deleteAllRoom = async (req, res) => {
             }
             if (room.participants) {
                 room.participants.map(async (item) => {
-                    let participant = await Participant.findById(item._id.toString())
-                    if (participant) {
-                        participant.room_id = undefined
-                        participant.save()
+                    let participant = await Participant.findOneAndDelete({_id:item._id.toString(),user: req.userId})
+                    if (participant.user_id) {
+                        const user = await User.findById(participant.user_id)
+                        if (user)
+                            user.participants = user.participants.filter(item => item._id.toString() !== participant._id.toString())
+                        user.save()
                     }
                 })
             }
@@ -436,6 +438,62 @@ const deleteAllRoom = async (req, res) => {
                 message: e
             })
     }
+    // try {
+    //     const rooms = await Room.find({})
+    //     if (!rooms) {
+    //         return res
+    //             .status(401)
+    //             .json({
+    //                 success: false,
+    //                 message: "there is not any room"
+    //             })
+    //     }
+    //     let deletedRooms = []
+    //     for (let room of rooms) {
+    //         if (room.messages) {
+    //             room.messages.map(async (item) => {
+    //                 let msg = await Message.findById(item._id.toString())
+    //                 if (msg) {
+    //                     msg.room_id = undefined
+    //                     msg.save()
+    //                 }
+    //             })
+    //         }
+    //         if (room.participants) {
+    //             room.participants.map(async (item) => {
+    //                 let participant = await Participant.findById(item._id.toString())
+    //                 if (participant) {
+    //                     participant.room_id = undefined
+    //                     participant.save()
+    //                 }
+    //             })
+    //         }
+    //         const deleteRoom = await Room.findOneAndDelete({
+    //             _id: room._id,
+    //             user: req.userId
+    //         })
+    //         if (!deleteRoom)
+    //             return res
+    //                 .status(401)
+    //                 .json({
+    //                     success: false,
+    //                     message: "Room not exist"
+    //                 })
+    //         deletedRooms.push(deleteRoom)
+    //     }
+    //     return res
+    //         .json({
+    //             success: true,
+    //             data: deletedRooms
+    //         })
+    // } catch (e) {
+    //     return res
+    //         .status(500)
+    //         .json({
+    //             success: false,
+    //             message: e
+    //         })
+    // }
 }
 
 module.exports = {createRoomPublic, createRoomPrivate, getRoom, getRoomPrivateByUserId, getRoomGroupByUserId, getRoomByUserId, deleteRoom, deleteAllRoom};

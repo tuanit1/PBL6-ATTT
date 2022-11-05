@@ -62,6 +62,7 @@ const createMessage = async (req, res) => {
         await user.save()
         room.messages.push(newMessage._id)
         await room.save()
+        //socket
         res.json({
             success: true,
             message: 'Create message successfully',
