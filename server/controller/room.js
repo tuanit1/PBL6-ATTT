@@ -171,30 +171,32 @@ const getRoomPrivateByUserId = async (req, res) => {
         let data = []
         let room = {room: null, messages: [null], user: null}
         for (let p of participants) {
-            let roomDB = await Room.findById(p.room_id)
-                .populate({
-                    path: 'messages',
-                    options: {
-                        limit: 10,
-                        sort: {created: -1},
-                        skip: 0,
+            if (p.room_id) {
+                let roomDB = await Room.findById(p.room_id)
+                    .populate({
+                        path: 'messages',
+                        options: {
+                            limit: 10,
+                            sort: {created: -1},
+                            skip: 0,
+                        }
+                    })
+                if (roomDB.type === 'private') {
+                    room.room = {
+                        room_id: roomDB._id,
+                        name: roomDB.name,
+                        image_ic: roomDB.image_ic,
+                        type: roomDB.type
                     }
-                })
-            if (roomDB.type === 'private') {
-                room.room = {
-                    room_id: roomDB._id,
-                    name: roomDB.name,
-                    image_ic: roomDB.image_ic,
-                    type: roomDB.type
-                }
-                room.messages = roomDB.messages
-                for (let pt of roomDB.participants) {
-                    let joiner = await Participant.findById(pt)
-                    if (joiner.user_id.toString() !== user._id.toString()) {
-                        room.user = await User.findById(joiner.user_id)
+                    room.messages = roomDB.messages
+                    for (let pt of roomDB.participants) {
+                        let joiner = await Participant.findById(pt)
+                        if (joiner.user_id.toString() !== user._id.toString()) {
+                            room.user = await User.findById(joiner.user_id)
+                        }
                     }
+                    data.push(room)
                 }
-                data.push(room)
             }
         }
         return res
@@ -228,25 +230,27 @@ const getRoomGroupByUserId = async (req, res) => {
         let data = []
         let room = {room: null, messages: [null], user: null}
         for (let p of participants) {
-            let roomDB = await Room.findById(p.room_id)
-                .populate({
-                    path: 'messages',
-                    options: {
-                        limit: 10,
-                        sort: {created: -1},
-                        skip: 0,
+            if (p.room_id) {
+                let roomDB = await Room.findById(p.room_id)
+                    .populate({
+                        path: 'messages',
+                        options: {
+                            limit: 10,
+                            sort: {created: -1},
+                            skip: 0,
+                        }
+                    })
+                if (roomDB.type === 'group') {
+                    room.user = null
+                    room.room = {
+                        room_id: roomDB._id,
+                        name: roomDB.name,
+                        image_ic: roomDB.image_ic,
+                        type: roomDB.type
                     }
-                })
-            if (roomDB.type === 'group') {
-                room.user = null
-                room.room = {
-                    room_id: roomDB._id,
-                    name: roomDB.name,
-                    image_ic: roomDB.image_ic,
-                    type: roomDB.type
+                    room.messages = roomDB.messages
+                    data.push(room)
                 }
-                room.messages = roomDB.messages
-                data.push(room)
             }
         }
         return res
@@ -286,34 +290,36 @@ const getRoomByUserId = async (req, res) => {
         let data = []
         for (let p of participants) {
             let room = {room: null, messages: [null], user: null}
-            let roomDB = await Room.findById(p.room_id)
-                .populate({
-                    path: 'messages',
-                    options: {
-                        limit: 10,
-                        sort: {created: -1},
-                        skip: 0,
-                    }
-                })
-            room.room = {
-                room_id: roomDB._id,
-                name: roomDB.name,
-                image_ic: roomDB.image_ic,
-                type: roomDB.type
-            }
-            room.messages = roomDB.messages
-            if (roomDB.type === 'group') {
-                room.user = null
-            }
-            else {
-                for (let pt of roomDB.participants) {
-                    let joiner = await Participant.findById(pt)
-                    if (joiner.user_id.toString() !== user._id.toString()) {
-                        room.user = await User.findById(joiner.user_id)
+            if (p.room_id) {
+                let roomDB = await Room.findById(p.room_id)
+                    .populate({
+                        path: 'messages',
+                        options: {
+                            limit: 10,
+                            sort: {created: -1},
+                            skip: 0,
+                        }
+                    })
+                room.room = {
+                    room_id: roomDB._id,
+                    name: roomDB.name,
+                    image_ic: roomDB.image_ic,
+                    type: roomDB.type
+                }
+                room.messages = roomDB.messages
+                if (roomDB.type === 'group') {
+                    room.user = null
+                }
+                else {
+                    for (let pt of roomDB.participants) {
+                        let joiner = await Participant.findById(pt)
+                        if (joiner.user_id.toString() !== user._id.toString()) {
+                            room.user = await User.findById(joiner.user_id)
+                        }
                     }
                 }
+                data.push(room)
             }
-            data.push(room)
         }
         return res
             .json({
