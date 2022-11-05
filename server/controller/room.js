@@ -358,10 +358,12 @@ const deleteRoom = async (req, res) => {
         }
         if (room.participants) {
             room.participants.map(async (item) => {
-                let participant = await Participant.findById(item._id.toString())
-                if (participant) {
-                    participant.room_id = undefined
-                    participant.save()
+                let participant = await Participant.findOneAndDelete({_id:item._id.toString(),user: req.userId})
+                if (participant.user_id) {
+                    const user = await User.findById(participant.user_id)
+                    if (user)
+                        user.participants = user.participants.filter(item => item._id.toString() !== participant._id.toString())
+                    user.save()
                 }
             })
         }
