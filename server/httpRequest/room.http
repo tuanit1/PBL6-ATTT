@@ -29,25 +29,25 @@ GET http://localhost:8080/api/room/private/6Uj630yjijSYLAEvQ1WL90Tfdra2
 ###5
 //get group room by userId
 #GET http://localhost:8080/api/room/group/{{userId}}
-GET http://localhost:8080/api/room/group/6Uj630yjijSYLAEvQ1WL90Tfdra2
+GET http://localhost:8080/api/room/group/JoXu8k5EKNOaZwUqSHzTQUgXm503
 
 
-###4
+###6
 //get private room by userId and partnerId
 #GET http://localhost:8080/api/room/check/{{userId}}&{{partnerId}}
 GET http://localhost:8080/api/room/check/A931rAdlZATBBnWaySfO2UuQO8v2&JoXu8k5EKNOaZwUqSHzTQUgXm503
 
-###6
+###7
 //get room by userId
 #GET http://localhost:8080/api/room/{{userId}}
 GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2
 
-###7
+###8
 //delete room
 #DELETE http://localhost:8080/api/room/{{rId}}
 DELETE http://localhost:8080/api/room/636538e84005fd309a0a7d97
 
-###8
+###9
 //delete all room
 #DELETE http://localhost:8080/api/room/all/
 DELETE http://localhost:8080/api/room/
