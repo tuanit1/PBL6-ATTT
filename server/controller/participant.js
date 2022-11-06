@@ -47,6 +47,7 @@ const createParticipant = async (req, res) => {
             success: true,
             message: 'Create room successfully',
             data: {
+                _id: newParticipant._id,
                 user: user.name,
                 room: room.name,
                 nickname: newParticipant.nickname,

@@ -1,7 +1,6 @@
 const User = require('../models/User')
 const Message = require("../models/Message");
 const Participant = require("../models/Participant");
-const {get} = require("mongoose");
 
 const createUser = async (req, res) => {
     const {user_id, name, age, phone, image} = req.body
@@ -53,7 +52,7 @@ const createUser = async (req, res) => {
             success: true,
             message: 'Create user successfully',
             data: {
-                id: newUser.user_id,
+                _id: newUser.user_id,
                 name: newUser.name,
                 age: newUser.age,
                 phone: newUser.phone,
