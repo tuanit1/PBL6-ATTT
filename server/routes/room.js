@@ -17,6 +17,9 @@ router.get('/private/:userId', roomController.getRoomPrivateByUserId)
 //get public room by user
 router.get('/group/:userId', roomController.getRoomGroupByUserId)
 
+//get private room by 2 user
+router.get('/check/:userId&:partnerId', roomController.getRoomPrivateByUsers)
+
 //get room by user
 router.get('/:userId', roomController.getRoomByUserId)
 

@@ -2,7 +2,6 @@ const Message = require(`../models/Message`)
 const User = require("../models/User");
 const Room = require("../models/Room");
 const Participant = require("../models/Participant");
-const {json} = require("express");
 
 const createRoomPublic = async (req, res) => {
     const {name, image_ic} = req.body
@@ -270,6 +269,88 @@ const getRoomGroupByUserId = async (req, res) => {
     }
 }
 
+const getRoomPrivateByUsers = async (req, res) => {
+    const {userId, partnerId} = req.params
+    const user = await User.findOne({user_id: userId})
+    if (!user) {
+        return res
+            .status(404)
+            .json({
+                success: false,
+                message: "User is not existing!"
+            })
+
+    }
+    const partner = await User.findOne({user_id: partnerId})
+    if (!partner) {
+        return res
+            .status(404)
+            .json({
+                success: false,
+                message: "User is not existing!"
+            })
+
+    }
+    try {
+        let user_participants = []
+        let partner_participants = []
+        for (let p of user.participants) {
+            let participant = await Participant.findById(p)
+            user_participants.push(participant)
+        }
+        for (let p of partner.participants) {
+            let participant = await Participant.findById(p)
+            partner_participants.push(participant)
+        }
+        let room = {room: null, messages: [null], user: null}
+        for (let up of user_participants) {
+            for (let pp of partner_participants) {
+                if (up.room_id && pp.room_id)
+                    if (up.room_id === pp.room_id) {
+                        let roomDB = await Room.findById(up.room_id)
+                            .populate({
+                                path: 'messages',
+                                options: {
+                                    limit: 10,
+                                    sort: {created: -1},
+                                    skip: 0,
+                                }
+                            })
+                        if (roomDB.type === 'private') {
+                            room.room = {
+                                room_id: roomDB._id,
+                                name: roomDB.name,
+                                image_ic: roomDB.image_ic,
+                                type: roomDB.type
+                            }
+                            room.messages = roomDB.messages
+                            for (let pt of roomDB.participants) {
+                                let joiner = await Participant.findById(pt)
+                                if (joiner.user_id.toString() !== user._id.toString()) {
+                                    room.user = await User.findById(joiner.user_id)
+                                }
+                            }
+                            return res
+                                .json({
+                                    success: true,
+                                    message: 'get private rooms successfull',
+                                    data: room
+                                })
+                        }
+                    }
+            }
+        }
+        return res
+            .json({
+                success: true,
+                message: 'get private rooms successfull',
+                data: room
+            })
+    } catch (e) {
+
+    }
+}
+
 const getRoomByUserId = async (req, res) => {
     const {userId} = req.params
     const user = await User.findOne({user_id: userId})
@@ -505,4 +586,4 @@ const deleteAllRoom = async (req, res) => {
     // }
 }
 
-module.exports = {createRoomPublic, createRoomPrivate, getRoom, getRoomPrivateByUserId, getRoomGroupByUserId, getRoomByUserId, deleteRoom, deleteAllRoom};
+module.exports = {createRoomPublic, createRoomPrivate, getRoom, getRoomPrivateByUserId, getRoomGroupByUserId, getRoomPrivateByUsers, getRoomByUserId, deleteRoom, deleteAllRoom};
