@@ -117,6 +117,7 @@ const createRoomPrivate = async (req, res) => {
             success: true,
             message: 'Create participant successfully',
             data : {
+                _id: newRoom._id,
                 name: newRoom.name,
                 type: newRoom.type,
                 image_ic: newRoom.image_ic,
@@ -243,7 +244,7 @@ const getRoomGroupByUserId = async (req, res) => {
                 if (roomDB.type === 'group') {
                     room.user = null
                     room.room = {
-                        room_id: roomDB._id,
+                        _id: roomDB._id,
                         name: roomDB.name,
                         image_ic: roomDB.image_ic,
                         type: roomDB.type
@@ -301,7 +302,7 @@ const getRoomByUserId = async (req, res) => {
                         }
                     })
                 room.room = {
-                    room_id: roomDB._id,
+                    _id: roomDB._id,
                     name: roomDB.name,
                     image_ic: roomDB.image_ic,
                     type: roomDB.type
