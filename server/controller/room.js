@@ -184,7 +184,7 @@ const getRoomPrivateByUserId = async (req, res) => {
                         path: 'messages',
                         options: {
                             limit: 10,
-                            sort: {created: -1},
+                            sort: {"time": "desc"},
                             skip: 0,
                         }
                     })
@@ -257,7 +257,7 @@ const getRoomGroupByUserId = async (req, res) => {
                         path: 'messages',
                         options: {
                             limit: 10,
-                            sort: {created: -1},
+                            sort: {"time": "desc"},
                             skip: 0,
                         }
                     })
@@ -354,7 +354,7 @@ const getRoomPrivateByUsers = async (req, res) => {
                                 path: 'messages',
                                 options: {
                                     limit: 10,
-                                    sort: {created: -1},
+                                    sort: {"time": "desc"},
                                     skip: 0,
                                 }
                             })
@@ -439,7 +439,7 @@ const getRoomByUserId = async (req, res) => {
                         path: 'messages',
                         options: {
                             limit: 1,
-                            sort: {created: -1},
+                            sort: {"time": "desc"},
                             skip: 0,
                         }
                     })
