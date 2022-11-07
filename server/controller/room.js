@@ -360,7 +360,7 @@ const getRoomPrivateByUsers = async (req, res) => {
                             })
                         if (roomDB.type === 'private') {
                             room.room = {
-                                room_id: roomDB._id,
+                                _id: roomDB._id,
                                 name: roomDB.name,
                                 image_ic: roomDB.image_ic,
                                 type: roomDB.type
