@@ -35,7 +35,7 @@ GET http://localhost:8080/api/room/group/JoXu8k5EKNOaZwUqSHzTQUgXm503
 ###6
 //get private room by userId and partnerId
 #GET http://localhost:8080/api/room/check/{{userId}}&{{partnerId}}
-GET http://localhost:8080/api/room/check/A931rAdlZATBBnWaySfO2UuQO8v2&JoXu8k5EKNOaZwUqSHzTQUgXm503
+GET http://localhost:8080/api/room/check/6Uj630yjijSYLAEvQ1WL90Tfdra2&A931rAdlZATBBnWaySfO2UuQO8v2
 
 ###7
 //get room by userId

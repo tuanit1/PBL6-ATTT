@@ -348,7 +348,7 @@ const getRoomPrivateByUsers = async (req, res) => {
         for (let up of user_participants) {
             for (let pp of partner_participants) {
                 if (up.room_id && pp.room_id)
-                    if (up.room_id === pp.room_id) {
+                    if (up.room_id.toString() === pp.room_id.toString()) {
                         let roomDB = await Room.findById(up.room_id)
                             .populate({
                                 path: 'messages',
