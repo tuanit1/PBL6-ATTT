@@ -176,7 +176,7 @@ const getRoomPrivateByUserId = async (req, res) => {
             participants.push(participant)
         }
         let data = []
-        let room = {room: null, messages: [], participant: null}
+        let room = {room: null, messages: null, participant: null}
         for (let p of participants) {
             if (p.room_id) {
                 let roomDB = await Room.findById(p.room_id)
@@ -247,7 +247,7 @@ const getRoomGroupByUserId = async (req, res) => {
             participants.push(participant)
         }
         let data = []
-        let room = {room: null, messages: [], participantlist: []}
+        let room = {room: null, messages: null, participant: null}
         for (let p of participants) {
             if (p.room_id) {
                 let roomDB = await Room.findById(p.room_id)
@@ -267,7 +267,7 @@ const getRoomGroupByUserId = async (req, res) => {
                         type: roomDB.type
                     }
                     room.messages = roomDB.messages
-                    room.participantlist = null
+                    room.participant = null
                     // for (let pt of roomDB.participants) {
                     //     let participant_save = {}
                     //     let joiner = await Participant.findById(pt).populate('user_id')
@@ -340,7 +340,7 @@ const getRoomPrivateByUsers = async (req, res) => {
             let participant = await Participant.findById(p)
             partner_participants.push(participant)
         }
-        let room = {room: null, messages: [], participant: []}
+        let room = {room: null, messages: null, participant: null}
         for (let up of user_participants) {
             for (let pp of partner_participants) {
                 if (up.room_id && pp.room_id)
@@ -426,7 +426,7 @@ const getRoomByUserId = async (req, res) => {
         }
         let data = []
         for (let p of participants) {
-            let room = {room: null, messages: [], participant: []}
+            let room = {room: null, messages: null, participant: null}
             if (p.room_id) {
                 let roomDB = await Room.findById(p.room_id)
                     .populate({
