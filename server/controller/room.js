@@ -3,6 +3,7 @@ const User = require("../models/User");
 const Room = require("../models/Room");
 const Participant = require("../models/Participant");
 
+//1
 const createRoomPublic = async (req, res) => {
     const {name, image_ic} = req.body
 
@@ -64,6 +65,8 @@ const createRoomPublic = async (req, res) => {
     }
 }
 
+
+//2
 const createRoomPrivate = async (req, res) => {
     const {userId, receiverId} = req.params
     //validate
@@ -132,6 +135,8 @@ const createRoomPrivate = async (req, res) => {
     }
 }
 
+
+//3
 const getRoom = async (req, res) => {
     try {
         const allRoom = await Room.find({})
@@ -150,6 +155,8 @@ const getRoom = async (req, res) => {
     }
 }
 
+
+//4
 const getRoomPrivateByUserId = async (req, res) => {
     const {userId} = req.params
     const user = await User.findOne({user_id: userId})
@@ -221,6 +228,8 @@ const getRoomPrivateByUserId = async (req, res) => {
     }
 }
 
+
+//5
 const getRoomGroupByUserId = async (req, res) => {
     const {userId} = req.params
     const user = await User.findOne({user_id: userId})
@@ -259,23 +268,24 @@ const getRoomGroupByUserId = async (req, res) => {
                         type: roomDB.type
                     }
                     room.messages = roomDB.messages
-                    for (let pt of roomDB.participants) {
-                        let participant_save = {}
-                        let joiner = await Participant.findById(pt).populate('user_id')
-                        if (joiner) {
-                            participant_save._id = joiner._id
-                            participant_save.nickname = joiner.nickname
-                            participant_save.isAdmin = joiner.isAdmin
-                            participant_save.timestamp = joiner.timestamp
-                            participant_save.allowSendMSG = joiner.allowSendMSG
-                            participant_save.allowSendFile = joiner.allowSendFile
-                            participant_save.allowViewFile = joiner.allowViewFile
-                            participant_save.user = joiner.user_id
-                            participant_save.room_id = joiner.room_id
-                            // room.userlist.push(await User.findById(joiner.user_id))
-                            room.participantlist.push(participant_save)
-                        }
-                    }
+                    room.participantlist = null
+                    // for (let pt of roomDB.participants) {
+                    //     let participant_save = {}
+                    //     let joiner = await Participant.findById(pt).populate('user_id')
+                    //     if (joiner) {
+                    //         participant_save._id = joiner._id
+                    //         participant_save.nickname = joiner.nickname
+                    //         participant_save.isAdmin = joiner.isAdmin
+                    //         participant_save.timestamp = joiner.timestamp
+                    //         participant_save.allowSendMSG = joiner.allowSendMSG
+                    //         participant_save.allowSendFile = joiner.allowSendFile
+                    //         participant_save.allowViewFile = joiner.allowViewFile
+                    //         participant_save.user = joiner.user_id
+                    //         participant_save.room_id = joiner.room_id
+                    //         // room.userlist.push(await User.findById(joiner.user_id))
+                    //         room.participantlist.push(participant_save)
+                    //     }
+                    // }
                     data.push(room)
                 }
             }
@@ -296,6 +306,8 @@ const getRoomGroupByUserId = async (req, res) => {
     }
 }
 
+
+//6
 const getRoomPrivateByUsers = async (req, res) => {
     const {userId, partnerId} = req.params
     const user = await User.findOne({user_id: userId})
@@ -389,6 +401,7 @@ const getRoomPrivateByUsers = async (req, res) => {
     }
 }
 
+//7
 const getRoomByUserId = async (req, res) => {
     const {userId} = req.params
     const user = await User.findOne({user_id: userId})
@@ -415,7 +428,7 @@ const getRoomByUserId = async (req, res) => {
                     .populate({
                         path: 'messages',
                         options: {
-                            limit: 10,
+                            limit: 1,
                             sort: {created: -1},
                             skip: 0,
                         }
@@ -427,22 +440,27 @@ const getRoomByUserId = async (req, res) => {
                     type: roomDB.type
                 }
                 room.messages = roomDB.messages
-                for (let pt of roomDB.participants) {
-                    let participant_save = {}
-                    let joiner = await Participant.findById(pt).populate('user_id')
-                    if (joiner) {
-                        participant_save._id = joiner._id
-                        participant_save.nickname = joiner.nickname
-                        participant_save.isAdmin = joiner.isAdmin
-                        participant_save.timestamp = joiner.timestamp
-                        participant_save.allowSendMSG = joiner.allowSendMSG
-                        participant_save.allowSendFile = joiner.allowSendFile
-                        participant_save.allowViewFile = joiner.allowViewFile
-                        participant_save.user = joiner.user_id
-                        participant_save.room_id = joiner.room_id
-                        // room.userlist.push(await User.findById(joiner.user_id))
-                        room.participantlist.push(participant_save)
+                if (roomDB.type === 'private') {
+                    for (let pt of roomDB.participants) {
+                        let participant_save = {}
+                        let joiner = await Participant.findById(pt).populate('user_id')
+                        if (joiner) {
+                            participant_save._id = joiner._id
+                            participant_save.nickname = joiner.nickname
+                            participant_save.isAdmin = joiner.isAdmin
+                            participant_save.timestamp = joiner.timestamp
+                            participant_save.allowSendMSG = joiner.allowSendMSG
+                            participant_save.allowSendFile = joiner.allowSendFile
+                            participant_save.allowViewFile = joiner.allowViewFile
+                            participant_save.user = joiner.user_id
+                            participant_save.room_id = joiner.room_id
+                            // room.userlist.push(await User.findById(joiner.user_id))
+                            room.participantlist.push(participant_save)
+                        }
                     }
+                }
+                else {
+                    room.participantlist = null
                 }
                 data.push(room)
             }
@@ -464,6 +482,7 @@ const getRoomByUserId = async (req, res) => {
     }
 }
 
+//8
 const deleteRoom = async (req, res) => {
     try {
         const roomDeleteCondition = {
@@ -513,6 +532,7 @@ const deleteRoom = async (req, res) => {
     }
 }
 
+//9
 const deleteAllRoom = async (req, res) => {
     try {
         const rooms = await Room.find({})
