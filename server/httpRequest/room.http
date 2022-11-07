@@ -24,7 +24,7 @@ GET http://localhost:8080/api/room/
 ###4
 //get private room by userId
 #GET http://localhost:8080/api/room//private/{{userId}}
-GET http://localhost:8080/api/room/private/6Uj630yjijSYLAEvQ1WL90Tfdra2
+GET http://localhost:8080/api/room/private/SIm5V7pekPTwhTZ4TGw23D4FpTs1
 
 ###5
 //get group room by userId
@@ -40,7 +40,7 @@ GET http://localhost:8080/api/room/check/A931rAdlZATBBnWaySfO2UuQO8v2&JoXu8k5EKN
 ###7
 //get room by userId
 #GET http://localhost:8080/api/room/{{userId}}
-GET http://localhost:8080/api/room/A931rAdlZATBBnWaySfO2UuQO8v2
+GET http://localhost:8080/api/room/SIm5V7pekPTwhTZ4TGw23D4FpTs1
 
 ###8
 //delete room
