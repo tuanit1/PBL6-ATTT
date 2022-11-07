@@ -1,3 +1,9 @@
+GET http://localhost:8080/api/room/group/JoXu8k5EKNOaZwUqSHzTQUgXm503
+
+<> 2022-11-07T150013.200.json
+
+###
+
 GET http://localhost:8080/api/room/SIm5V7pekPTwhTZ4TGw23D4FpTs1
 
 <> 2022-11-07T145614.200.json
@@ -289,12 +295,6 @@ GET http://localhost:8080/api/room/
 GET http://localhost:8080/api/participant/
 
 <> 2022-11-05T155445.200.json
-
-###
-
-GET http://localhost:8080/api/room/
-
-<> 2022-11-05T155433.200.json
 
 ###
 
