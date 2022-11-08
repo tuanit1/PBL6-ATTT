@@ -165,6 +165,7 @@ const getRoomById = async (req, res) => {
             .populate({
                 path:'participants',
             })
+
         console.log(user.participants)
         if (!user) {
             return res
@@ -205,7 +206,10 @@ const getRoomById = async (req, res) => {
                 if (roomDB.type === 'private') {
                     for (let pt of roomDB.participants) {
                         let participant_save = {}
-                        let joiner = await Participant.findById(pt).populate('user_id')
+                        let joiner = await Participant.findById(pt).populate({
+                            path: 'user_id',
+                            select: 'user_id name age phone image'
+                        })
                         if (joiner && joiner.user_id.user_id !== user.user_id) {
                             if (data.name === 'private')
                                 data.name = joiner.nickname
@@ -294,7 +298,10 @@ const getRoomPrivateByUserId = async (req, res) => {
                                 room.message = null
                             for (let pt of roomDB.participants) {
                                 let participant_save = {}
-                                let joiner = await Participant.findById(pt).populate('user_id')
+                                let joiner = await Participant.findById(pt).populate({
+                                    path: 'user_id',
+                                    select: 'user_id name age phone image'
+                                })
                                 if (joiner && joiner.user_id.user_id !== user.user_id) {
                                     participant_save._id = joiner._id
                                     participant_save.nickname = joiner.nickname
@@ -469,7 +476,10 @@ const getRoomPrivateByUsers = async (req, res) => {
                                     room.message = null
                                 for (let pt of roomDB.participants) {
                                     let participant_save = {}
-                                    let joiner = await Participant.findById(pt).populate('user_id')
+                                    let joiner = await Participant.findById(pt).populate({
+                                        path: 'user_id',
+                                        select: 'user_id name age phone image'
+                                    })
                                     if (joiner && joiner.user_id.user_id === partner.user_id) {
                                         participant_save._id = joiner._id
                                         participant_save.nickname = joiner.nickname
