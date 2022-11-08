@@ -199,7 +199,7 @@ const getRoomById = async (req, res) => {
                 data.name = room.name
                 data.image_ic = room.image_ic
                 data.type = room.type
-                data.message = room.messages
+                data.message = room.messages[0]
                 if (room.type === 'private') {
                     for (let pt of room.participants) {
                         let participant_save = {}
