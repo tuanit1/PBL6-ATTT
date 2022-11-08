@@ -11,6 +11,9 @@ router.post('/private/:userId&:receiverId', roomController.createRoomPrivate)
 //get all room
 router.get('/', roomController.getRoom)
 
+//get room by id user and room
+router.get('/:userId&:roomId', roomController.getRoomById)
+
 //get private room by user
 router.get('/private/:userId', roomController.getRoomPrivateByUserId)
 

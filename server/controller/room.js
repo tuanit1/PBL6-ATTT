@@ -157,6 +157,96 @@ const getRoom = async (req, res) => {
 
 
 //4
+const getRoomById = async (req, res) => {
+    const {userId,roomId} = req.params
+    try {
+        let data = {}
+        const user = await User.findOne({user_id: userId})
+            .populate({
+                path:'participants',
+                populate: {
+                    path:'room_id',
+                    select: '_id'
+                }
+            })
+        if (!user) {
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message: "User is not existing!"
+                })
+        }
+        for (let p of user.participants) {
+            if (p.room_id._id.toString() === roomId.toString()) {
+                const room = await Room.findById(roomId).populate({
+                    path: 'messages',
+                    options: {
+                        limit: 10,
+                        sort: {"time": "desc"},
+                        skip: 0,
+                    }
+                })
+                if (!room) {
+                    return res
+                        .status(404)
+                        .json({
+                            success: false,
+                            message: "Room is not existing!"
+                        })
+                }
+                data._id = room._id
+                data.name = room.name
+                data.image_ic = room.image_ic
+                data.type = room.type
+                data.message = room.messages
+                if (room.type === 'private') {
+                    for (let pt of room.participants) {
+                        let participant_save = {}
+                        let joiner = await Participant.findById(pt).populate('user_id')
+                        if (joiner && joiner.user_id.user_id !== user.user_id) {
+                            if (data.name === 'private')
+                                data.name = joiner.nickname
+                            participant_save._id = joiner._id
+                            participant_save.nickname = joiner.nickname
+                            participant_save.isAdmin = joiner.isAdmin
+                            participant_save.timestamp = joiner.timestamp
+                            participant_save.allowSendMSG = joiner.allowSendMSG
+                            participant_save.allowSendFile = joiner.allowSendFile
+                            participant_save.allowViewFile = joiner.allowViewFile
+                            participant_save.user = joiner.user_id
+                            participant_save.room_id = joiner.room_id
+                            data.participant = participant_save
+                        }
+                    }
+                }
+                else {
+                    data.participant = null
+                }
+                return res
+                    .json({
+                        success: true,
+                        data: data
+                    })
+            }
+        }
+        return res
+            .status(404)
+            .json({
+                success: false,
+                message: "user not in the room or room is not exist!"
+            })
+    } catch (e) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: e
+            })
+    }
+}
+
+//5
 const getRoomPrivateByUserId = async (req, res) => {
     const {userId} = req.params
     const user = await User.findOne({user_id: userId})
@@ -167,7 +257,6 @@ const getRoomPrivateByUserId = async (req, res) => {
                 success: false,
                 message: "User is not existing!"
             })
-
     }
     try {
         let participants = []
@@ -233,7 +322,7 @@ const getRoomPrivateByUserId = async (req, res) => {
 }
 
 
-//5
+//6
 const getRoomGroupByUserId = async (req, res) => {
     const {userId} = req.params
     const user = await User.findOne({user_id: userId})
@@ -316,7 +405,7 @@ const getRoomGroupByUserId = async (req, res) => {
 }
 
 
-//6
+//7
 const getRoomPrivateByUsers = async (req, res) => {
     const {userId, partnerId} = req.params
     const user = await User.findOne({user_id: userId})
@@ -418,7 +507,7 @@ const getRoomPrivateByUsers = async (req, res) => {
     }
 }
 
-//7
+//8
 const getRoomByUserId = async (req, res) => {
     const {userId} = req.params
     const user = await User.findOne({user_id: userId})
@@ -503,7 +592,7 @@ const getRoomByUserId = async (req, res) => {
     }
 }
 
-//8
+//9
 const deleteRoom = async (req, res) => {
     try {
         const roomDeleteCondition = {
@@ -553,7 +642,7 @@ const deleteRoom = async (req, res) => {
     }
 }
 
-//9
+//10
 const deleteAllRoom = async (req, res) => {
     try {
         const rooms = await Room.find({})
@@ -671,4 +760,4 @@ const deleteAllRoom = async (req, res) => {
     // }
 }
 
-module.exports = {createRoomPublic, createRoomPrivate, getRoom, getRoomPrivateByUserId, getRoomGroupByUserId, getRoomPrivateByUsers, getRoomByUserId, deleteRoom, deleteAllRoom};
+module.exports = {createRoomPublic, createRoomPrivate, getRoom, getRoomById, getRoomPrivateByUserId, getRoomGroupByUserId, getRoomPrivateByUsers, getRoomByUserId, deleteRoom, deleteAllRoom};
