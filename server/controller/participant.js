@@ -150,27 +150,17 @@ const deleteParticipant = async (req, res) => {
         }
         if (participant.user_id) {
             const user = await User.findById(participant.user_id)
-            if (!user)
-                return res
-                    .status(404)
-                    .json({
-                        success: false,
-                        message: "user not found"
-                    })
-            user.participants = user.participants.filter(item => item._id.toString() !== participant._id.toString())
-            user.save()
+            if (user) {
+                user.participants = user.participants.filter(item => item._id.toString() !== participant._id.toString())
+                user.save()
+            }
         }
         if (participant.room_id) {
             const room = await Room.findById(participant.room_id)
-            if (!room)
-                return res
-                    .status(404)
-                    .json({
-                        success: false,
-                        message: "room not found"
-                    })
-            room.participants = room.participants.filter(item => item._id.toString() !== participant._id.toString())
-            room.save()
+            if (room) {
+                room.participants = room.participants.filter(item => item._id.toString() !== participant._id.toString())
+                room.save()
+            }
         }
         const deleteParticipant = await Participant.findOneAndDelete(participantDeleteCondition)
         if (!deleteParticipant)
@@ -197,15 +187,17 @@ const deleteAllParticipant = async (req, res) => {
             }
             if (participant.user_id) {
                 const user = await User.findById(participant.user_id)
-                if (user)
+                if (user) {
                     user.participants = user.participants.filter(item => item._id.toString() !== participant._id.toString())
-                user.save()
+                    user.save()
+                }
             }
             if (participant.room_id) {
                 const room = await Room.findById(participant.room_id)
-                if (room)
+                if (room) {
                     room.participants = room.participants.filter(item => item._id.toString() !== participant._id.toString())
-                room.save()
+                    room.save()
+                }
             }
             const deleteParticipant = await Participant.findOneAndDelete(participantDeleteCondition)
             if (!deleteParticipant)

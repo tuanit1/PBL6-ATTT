@@ -189,33 +189,35 @@ const getRoomPrivateByUserId = async (req, res) => {
                                 skip: 0,
                             }
                         })
-                    if (roomDB.type === 'private') {
-                        room.room = {
-                            room_id: roomDB._id,
-                            name: roomDB.name,
-                            image_ic: roomDB.image_ic,
-                            type: roomDB.type
-                        }
-                        room.message = roomDB.messages[0]
-                        if (!room.message)
-                            room.message = null
-                        for (let pt of roomDB.participants) {
-                            let participant_save = {}
-                            let joiner = await Participant.findById(pt).populate('user_id')
-                            if (joiner && joiner.user_id.user_id !== user.user_id) {
-                                participant_save._id = joiner._id
-                                participant_save.nickname = joiner.nickname
-                                participant_save.isAdmin = joiner.isAdmin
-                                participant_save.timestamp = joiner.timestamp
-                                participant_save.allowSendMSG = joiner.allowSendMSG
-                                participant_save.allowSendFile = joiner.allowSendFile
-                                participant_save.allowViewFile = joiner.allowViewFile
-                                participant_save.user = joiner.user_id
-                                participant_save.room_id = joiner.room_id
-                                room.participant = participant_save
+                    if (roomDB) {
+                        if (roomDB.type === 'private') {
+                            room.room = {
+                                room_id: roomDB._id,
+                                name: roomDB.name,
+                                image_ic: roomDB.image_ic,
+                                type: roomDB.type
                             }
+                            room.message = roomDB.messages[0]
+                            if (!room.message)
+                                room.message = null
+                            for (let pt of roomDB.participants) {
+                                let participant_save = {}
+                                let joiner = await Participant.findById(pt).populate('user_id')
+                                if (joiner && joiner.user_id.user_id !== user.user_id) {
+                                    participant_save._id = joiner._id
+                                    participant_save.nickname = joiner.nickname
+                                    participant_save.isAdmin = joiner.isAdmin
+                                    participant_save.timestamp = joiner.timestamp
+                                    participant_save.allowSendMSG = joiner.allowSendMSG
+                                    participant_save.allowSendFile = joiner.allowSendFile
+                                    participant_save.allowViewFile = joiner.allowViewFile
+                                    participant_save.user = joiner.user_id
+                                    participant_save.room_id = joiner.room_id
+                                    room.participant = participant_save
+                                }
+                            }
+                            data.push(room)
                         }
-                        data.push(room)
                     }
                 }
         }
@@ -263,35 +265,37 @@ const getRoomGroupByUserId = async (req, res) => {
                                 skip: 0,
                             }
                         })
-                    if (roomDB.type === 'group') {
-                        room.room = {
-                            _id: roomDB._id,
-                            name: roomDB.name,
-                            image_ic: roomDB.image_ic,
-                            type: roomDB.type
+                    if (roomDB) {
+                        if (roomDB.type === 'group') {
+                            room.room = {
+                                _id: roomDB._id,
+                                name: roomDB.name,
+                                image_ic: roomDB.image_ic,
+                                type: roomDB.type
+                            }
+                            room.message = roomDB.messages[0]
+                            if (!room.message)
+                                room.message = null
+                            room.participant = null
+                            // for (let pt of roomDB.participants) {
+                            //     let participant_save = {}
+                            //     let joiner = await Participant.findById(pt).populate('user_id')
+                            //     if (joiner) {
+                            //         participant_save._id = joiner._id
+                            //         participant_save.nickname = joiner.nickname
+                            //         participant_save.isAdmin = joiner.isAdmin
+                            //         participant_save.timestamp = joiner.timestamp
+                            //         participant_save.allowSendMSG = joiner.allowSendMSG
+                            //         participant_save.allowSendFile = joiner.allowSendFile
+                            //         participant_save.allowViewFile = joiner.allowViewFile
+                            //         participant_save.user = joiner.user_id
+                            //         participant_save.room_id = joiner.room_id
+                            //         // room.userlist.push(await User.findById(joiner.user_id))
+                            //         room.participantlist.push(participant_save)
+                            //     }
+                            // }
+                            data.push(room)
                         }
-                        room.message = roomDB.messages[0]
-                        if (!room.message)
-                            room.message = null
-                        room.participant = null
-                        // for (let pt of roomDB.participants) {
-                        //     let participant_save = {}
-                        //     let joiner = await Participant.findById(pt).populate('user_id')
-                        //     if (joiner) {
-                        //         participant_save._id = joiner._id
-                        //         participant_save.nickname = joiner.nickname
-                        //         participant_save.isAdmin = joiner.isAdmin
-                        //         participant_save.timestamp = joiner.timestamp
-                        //         participant_save.allowSendMSG = joiner.allowSendMSG
-                        //         participant_save.allowSendFile = joiner.allowSendFile
-                        //         participant_save.allowViewFile = joiner.allowViewFile
-                        //         participant_save.user = joiner.user_id
-                        //         participant_save.room_id = joiner.room_id
-                        //         // room.userlist.push(await User.findById(joiner.user_id))
-                        //         room.participantlist.push(participant_save)
-                        //     }
-                        // }
-                        data.push(room)
                     }
                 }
         }
@@ -447,37 +451,39 @@ const getRoomByUserId = async (req, res) => {
                                 skip: 0,
                             }
                         })
-                    room.room = {
-                        _id: roomDB._id,
-                        name: roomDB.name,
-                        image_ic: roomDB.image_ic,
-                        type: roomDB.type
-                    }
-                    room.message = roomDB.messages[0]
-                    if (!room.message)
-                        room.message = null
-                    if (roomDB.type === 'private') {
-                        for (let pt of roomDB.participants) {
-                            let participant_save = {}
-                            let joiner = await Participant.findById(pt).populate('user_id')
-                            if (joiner && joiner.user_id.user_id !== user.user_id) {
-                                participant_save._id = joiner._id
-                                participant_save.nickname = joiner.nickname
-                                participant_save.isAdmin = joiner.isAdmin
-                                participant_save.timestamp = joiner.timestamp
-                                participant_save.allowSendMSG = joiner.allowSendMSG
-                                participant_save.allowSendFile = joiner.allowSendFile
-                                participant_save.allowViewFile = joiner.allowViewFile
-                                participant_save.user = joiner.user_id
-                                participant_save.room_id = joiner.room_id
-                                room.participant = participant_save
+                    if (roomDB) {
+                        room.room = {
+                            _id: roomDB._id,
+                            name: roomDB.name,
+                            image_ic: roomDB.image_ic,
+                            type: roomDB.type
+                        }
+                        room.message = roomDB.messages[0]
+                        if (!room.message)
+                            room.message = null
+                        if (roomDB.type === 'private') {
+                            for (let pt of roomDB.participants) {
+                                let participant_save = {}
+                                let joiner = await Participant.findById(pt).populate('user_id')
+                                if (joiner && joiner.user_id.user_id !== user.user_id) {
+                                    participant_save._id = joiner._id
+                                    participant_save.nickname = joiner.nickname
+                                    participant_save.isAdmin = joiner.isAdmin
+                                    participant_save.timestamp = joiner.timestamp
+                                    participant_save.allowSendMSG = joiner.allowSendMSG
+                                    participant_save.allowSendFile = joiner.allowSendFile
+                                    participant_save.allowViewFile = joiner.allowViewFile
+                                    participant_save.user = joiner.user_id
+                                    participant_save.room_id = joiner.room_id
+                                    room.participant = participant_save
+                                }
                             }
                         }
+                        else {
+                            room.participant = null
+                        }
+                        data.push(room)
                     }
-                    else {
-                        room.participant = null
-                    }
-                    data.push(room)
                 }
         }
         return res
