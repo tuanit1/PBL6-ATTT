@@ -22,9 +22,9 @@ GET http://localhost:8080/api/room/
 
 
 ###4
-//get room by ID user and room
+//get room by ID user and room+
 #GET http://localhost:8080/api/room/{{userId}}&{{roomId}}
-GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2&6369fd05a3ec5210643147f4
+GET http://localhost:8080/api/room/A931rAdlZATBBnWaySfO2UuQO8v2&6364e01fa7ec08498dd9ba9e
 
 
 ###5
