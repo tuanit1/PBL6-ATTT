@@ -178,45 +178,46 @@ const getRoomPrivateByUserId = async (req, res) => {
         let data = []
         let room = {room: null, message: null, participant: null}
         for (let p of participants) {
-            if (p.room_id) {
-                let roomDB = await Room.findById(p.room_id)
-                    .populate({
-                        path: 'messages',
-                        options: {
-                            limit: 10,
-                            sort: {"time": "desc"},
-                            skip: 0,
+            if (p)
+                if (p.room_id) {
+                    let roomDB = await Room.findById(p.room_id)
+                        .populate({
+                            path: 'messages',
+                            options: {
+                                limit: 10,
+                                sort: {"time": "desc"},
+                                skip: 0,
+                            }
+                        })
+                    if (roomDB.type === 'private') {
+                        room.room = {
+                            room_id: roomDB._id,
+                            name: roomDB.name,
+                            image_ic: roomDB.image_ic,
+                            type: roomDB.type
                         }
-                    })
-                if (roomDB.type === 'private') {
-                    room.room = {
-                        room_id: roomDB._id,
-                        name: roomDB.name,
-                        image_ic: roomDB.image_ic,
-                        type: roomDB.type
-                    }
-                    room.message = roomDB.messages[0]
-                    if (!room.message)
-                        room.message = null
-                    for (let pt of roomDB.participants) {
-                        let participant_save = {}
-                        let joiner = await Participant.findById(pt).populate('user_id')
-                        if (joiner && joiner.user_id.user_id !== user.user_id) {
-                            participant_save._id = joiner._id
-                            participant_save.nickname = joiner.nickname
-                            participant_save.isAdmin = joiner.isAdmin
-                            participant_save.timestamp = joiner.timestamp
-                            participant_save.allowSendMSG = joiner.allowSendMSG
-                            participant_save.allowSendFile = joiner.allowSendFile
-                            participant_save.allowViewFile = joiner.allowViewFile
-                            participant_save.user = joiner.user_id
-                            participant_save.room_id = joiner.room_id
-                            room.participant = participant_save
+                        room.message = roomDB.messages[0]
+                        if (!room.message)
+                            room.message = null
+                        for (let pt of roomDB.participants) {
+                            let participant_save = {}
+                            let joiner = await Participant.findById(pt).populate('user_id')
+                            if (joiner && joiner.user_id.user_id !== user.user_id) {
+                                participant_save._id = joiner._id
+                                participant_save.nickname = joiner.nickname
+                                participant_save.isAdmin = joiner.isAdmin
+                                participant_save.timestamp = joiner.timestamp
+                                participant_save.allowSendMSG = joiner.allowSendMSG
+                                participant_save.allowSendFile = joiner.allowSendFile
+                                participant_save.allowViewFile = joiner.allowViewFile
+                                participant_save.user = joiner.user_id
+                                participant_save.room_id = joiner.room_id
+                                room.participant = participant_save
+                            }
                         }
+                        data.push(room)
                     }
-                    data.push(room)
                 }
-            }
         }
         return res
             .json({
@@ -251,47 +252,48 @@ const getRoomGroupByUserId = async (req, res) => {
         let data = []
         let room = {room: null, message: null, participant: null}
         for (let p of participants) {
-            if (p.room_id) {
-                let roomDB = await Room.findById(p.room_id)
-                    .populate({
-                        path: 'messages',
-                        options: {
-                            limit: 10,
-                            sort: {"time": "desc"},
-                            skip: 0,
+            if (p)
+                if (p.room_id) {
+                    let roomDB = await Room.findById(p.room_id)
+                        .populate({
+                            path: 'messages',
+                            options: {
+                                limit: 10,
+                                sort: {"time": "desc"},
+                                skip: 0,
+                            }
+                        })
+                    if (roomDB.type === 'group') {
+                        room.room = {
+                            _id: roomDB._id,
+                            name: roomDB.name,
+                            image_ic: roomDB.image_ic,
+                            type: roomDB.type
                         }
-                    })
-                if (roomDB.type === 'group') {
-                    room.room = {
-                        _id: roomDB._id,
-                        name: roomDB.name,
-                        image_ic: roomDB.image_ic,
-                        type: roomDB.type
+                        room.message = roomDB.messages[0]
+                        if (!room.message)
+                            room.message = null
+                        room.participant = null
+                        // for (let pt of roomDB.participants) {
+                        //     let participant_save = {}
+                        //     let joiner = await Participant.findById(pt).populate('user_id')
+                        //     if (joiner) {
+                        //         participant_save._id = joiner._id
+                        //         participant_save.nickname = joiner.nickname
+                        //         participant_save.isAdmin = joiner.isAdmin
+                        //         participant_save.timestamp = joiner.timestamp
+                        //         participant_save.allowSendMSG = joiner.allowSendMSG
+                        //         participant_save.allowSendFile = joiner.allowSendFile
+                        //         participant_save.allowViewFile = joiner.allowViewFile
+                        //         participant_save.user = joiner.user_id
+                        //         participant_save.room_id = joiner.room_id
+                        //         // room.userlist.push(await User.findById(joiner.user_id))
+                        //         room.participantlist.push(participant_save)
+                        //     }
+                        // }
+                        data.push(room)
                     }
-                    room.message = roomDB.messages[0]
-                    if (!room.message)
-                        room.message = null
-                    room.participant = null
-                    // for (let pt of roomDB.participants) {
-                    //     let participant_save = {}
-                    //     let joiner = await Participant.findById(pt).populate('user_id')
-                    //     if (joiner) {
-                    //         participant_save._id = joiner._id
-                    //         participant_save.nickname = joiner.nickname
-                    //         participant_save.isAdmin = joiner.isAdmin
-                    //         participant_save.timestamp = joiner.timestamp
-                    //         participant_save.allowSendMSG = joiner.allowSendMSG
-                    //         participant_save.allowSendFile = joiner.allowSendFile
-                    //         participant_save.allowViewFile = joiner.allowViewFile
-                    //         participant_save.user = joiner.user_id
-                    //         participant_save.room_id = joiner.room_id
-                    //         // room.userlist.push(await User.findById(joiner.user_id))
-                    //         room.participantlist.push(participant_save)
-                    //     }
-                    // }
-                    data.push(room)
                 }
-            }
         }
         return res
             .json({
@@ -347,52 +349,53 @@ const getRoomPrivateByUsers = async (req, res) => {
         let room = {room: null, message: null, participant: null}
         for (let up of user_participants) {
             for (let pp of partner_participants) {
-                if (up.room_id && pp.room_id)
-                    if (up.room_id.toString() === pp.room_id.toString()) {
-                        let roomDB = await Room.findById(up.room_id)
-                            .populate({
-                                path: 'messages',
-                                options: {
-                                    limit: 10,
-                                    sort: {"time": "desc"},
-                                    skip: 0,
-                                }
-                            })
-                        if (roomDB.type === 'private') {
-                            room.room = {
-                                _id: roomDB._id,
-                                name: roomDB.name,
-                                image_ic: roomDB.image_ic,
-                                type: roomDB.type
-                            }
-                            room.message = roomDB.messages[0]
-                            if (!room.message)
-                                room.message = null
-                            for (let pt of roomDB.participants) {
-                                let participant_save = {}
-                                let joiner = await Participant.findById(pt).populate('user_id')
-                                if (joiner && joiner.user_id.user_id === partner.user_id) {
-                                    participant_save._id = joiner._id
-                                    participant_save.nickname = joiner.nickname
-                                    participant_save.isAdmin = joiner.isAdmin
-                                    participant_save.timestamp = joiner.timestamp
-                                    participant_save.allowSendMSG = joiner.allowSendMSG
-                                    participant_save.allowSendFile = joiner.allowSendFile
-                                    participant_save.allowViewFile = joiner.allowViewFile
-                                    participant_save.user = joiner.user_id
-                                    participant_save.room_id = joiner.room_id
-                                    // room.userlist.push(await User.findById(joiner.user_id))
-                                    room.participant = participant_save
-                                }
-                            }
-                            return res
-                                .json({
-                                    success: true,
-                                    message: 'get private rooms successfull',
-                                    data: room
+                if (up && pp)
+                    if (up.room_id && pp.room_id)
+                        if (up.room_id.toString() === pp.room_id.toString()) {
+                            let roomDB = await Room.findById(up.room_id)
+                                .populate({
+                                    path: 'messages',
+                                    options: {
+                                        limit: 10,
+                                        sort: {"time": "desc"},
+                                        skip: 0,
+                                    }
                                 })
+                            if (roomDB.type === 'private') {
+                                room.room = {
+                                    _id: roomDB._id,
+                                    name: roomDB.name,
+                                    image_ic: roomDB.image_ic,
+                                    type: roomDB.type
+                                }
+                                room.message = roomDB.messages[0]
+                                if (!room.message)
+                                    room.message = null
+                                for (let pt of roomDB.participants) {
+                                    let participant_save = {}
+                                    let joiner = await Participant.findById(pt).populate('user_id')
+                                    if (joiner && joiner.user_id.user_id === partner.user_id) {
+                                        participant_save._id = joiner._id
+                                        participant_save.nickname = joiner.nickname
+                                        participant_save.isAdmin = joiner.isAdmin
+                                        participant_save.timestamp = joiner.timestamp
+                                        participant_save.allowSendMSG = joiner.allowSendMSG
+                                        participant_save.allowSendFile = joiner.allowSendFile
+                                        participant_save.allowViewFile = joiner.allowViewFile
+                                        participant_save.user = joiner.user_id
+                                        participant_save.room_id = joiner.room_id
+                                        // room.userlist.push(await User.findById(joiner.user_id))
+                                        room.participant = participant_save
+                                    }
+                                }
+                                return res
+                                    .json({
+                                        success: true,
+                                        message: 'get private rooms successfull',
+                                        data: room
+                                    })
+                            }
                         }
-                    }
             }
         }
         return res
@@ -433,48 +436,49 @@ const getRoomByUserId = async (req, res) => {
         let data = []
         for (let p of participants) {
             let room = {room: null, message: null, participant: null}
-            if (p.room_id) {
-                let roomDB = await Room.findById(p.room_id)
-                    .populate({
-                        path: 'messages',
-                        options: {
-                            limit: 1,
-                            sort: {"time": "desc"},
-                            skip: 0,
-                        }
-                    })
-                room.room = {
-                    _id: roomDB._id,
-                    name: roomDB.name,
-                    image_ic: roomDB.image_ic,
-                    type: roomDB.type
-                }
-                room.message = roomDB.messages[0]
-                if (!room.message)
-                    room.message = null
-                if (roomDB.type === 'private') {
-                    for (let pt of roomDB.participants) {
-                        let participant_save = {}
-                        let joiner = await Participant.findById(pt).populate('user_id')
-                        if (joiner && joiner.user_id.user_id !== user.user_id) {
-                            participant_save._id = joiner._id
-                            participant_save.nickname = joiner.nickname
-                            participant_save.isAdmin = joiner.isAdmin
-                            participant_save.timestamp = joiner.timestamp
-                            participant_save.allowSendMSG = joiner.allowSendMSG
-                            participant_save.allowSendFile = joiner.allowSendFile
-                            participant_save.allowViewFile = joiner.allowViewFile
-                            participant_save.user = joiner.user_id
-                            participant_save.room_id = joiner.room_id
-                            room.participant = participant_save
+            if (p)
+                if (p.room_id) {
+                    let roomDB = await Room.findById(p.room_id)
+                        .populate({
+                            path: 'messages',
+                            options: {
+                                limit: 1,
+                                sort: {"time": "desc"},
+                                skip: 0,
+                            }
+                        })
+                    room.room = {
+                        _id: roomDB._id,
+                        name: roomDB.name,
+                        image_ic: roomDB.image_ic,
+                        type: roomDB.type
+                    }
+                    room.message = roomDB.messages[0]
+                    if (!room.message)
+                        room.message = null
+                    if (roomDB.type === 'private') {
+                        for (let pt of roomDB.participants) {
+                            let participant_save = {}
+                            let joiner = await Participant.findById(pt).populate('user_id')
+                            if (joiner && joiner.user_id.user_id !== user.user_id) {
+                                participant_save._id = joiner._id
+                                participant_save.nickname = joiner.nickname
+                                participant_save.isAdmin = joiner.isAdmin
+                                participant_save.timestamp = joiner.timestamp
+                                participant_save.allowSendMSG = joiner.allowSendMSG
+                                participant_save.allowSendFile = joiner.allowSendFile
+                                participant_save.allowViewFile = joiner.allowViewFile
+                                participant_save.user = joiner.user_id
+                                participant_save.room_id = joiner.room_id
+                                room.participant = participant_save
+                            }
                         }
                     }
+                    else {
+                        room.participant = null
+                    }
+                    data.push(room)
                 }
-                else {
-                    room.participant = null
-                }
-                data.push(room)
-            }
         }
         return res
             .json({

@@ -40,7 +40,7 @@ GET http://localhost:8080/api/room/check/6Uj630yjijSYLAEvQ1WL90Tfdra2&A931rAdlZA
 ###7
 //get room by userId
 #GET http://localhost:8080/api/room/{{userId}}
-GET http://localhost:8080/api/room/SIm5V7pekPTwhTZ4TGw23D4FpTs1
+GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2
 
 ###8
 //delete room
