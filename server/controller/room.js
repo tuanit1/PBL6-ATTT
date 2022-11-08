@@ -174,12 +174,13 @@ const getRoomById = async (req, res) => {
                     message: "User is not existing!"
                 })
         }
+        let room = {room: null, message: null, participant: null}
         for (let p of user.participants) {
             // console.log(p)
             // console.log(p.room_id._id)
             // console.log(roomId)
             if (p.room_id._id.toString() === roomId.toString()) {
-                const room = await Room.findById(roomId).populate({
+                const roomDB = await Room.findById(roomId).populate({
                     path: 'messages',
                     options: {
                         limit: 10,
@@ -187,7 +188,7 @@ const getRoomById = async (req, res) => {
                         skip: 0,
                     }
                 })
-                if (!room) {
+                if (!roomDB) {
                     return res
                         .status(404)
                         .json({
@@ -195,13 +196,14 @@ const getRoomById = async (req, res) => {
                             message: "Room is not existing!"
                         })
                 }
-                data._id = room._id
-                data.name = room.name
-                data.image_ic = room.image_ic
-                data.type = room.type
-                data.message = room.messages[0]
-                if (room.type === 'private') {
-                    for (let pt of room.participants) {
+                data._id = roomDB._id
+                data.name = roomDB.name
+                data.image_ic = roomDB.image_ic
+                data.type = roomDB.type
+                room.room = data
+                room.message = roomDB.messages[0]
+                if (roomDB.type === 'private') {
+                    for (let pt of roomDB.participants) {
                         let participant_save = {}
                         let joiner = await Participant.findById(pt).populate('user_id')
                         if (joiner && joiner.user_id.user_id !== user.user_id) {
@@ -216,17 +218,17 @@ const getRoomById = async (req, res) => {
                             participant_save.allowViewFile = joiner.allowViewFile
                             participant_save.user = joiner.user_id
                             participant_save.room_id = joiner.room_id
-                            data.participant = participant_save
+                            room.participant = participant_save
                         }
                     }
                 }
                 else {
-                    data.participant = null
+                    room.participant = null
                 }
                 return res
                     .json({
                         success: true,
-                        data: data
+                        data: room
                     })
             }
         }
