@@ -86,6 +86,34 @@ const getParticipant = async (req, res) => {
     }
 }
 
+const getParticipantById = async (req, res) => {
+    try {
+        const {participantId} = req.params
+        const participant = await Participant.findById(participantId)
+        if (!participant) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "participant is not existed!"
+                })
+        }
+        return res
+            .json({
+                success: true,
+                data: participant
+            })
+    } catch (e) {
+        console.log(e)
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: e
+            })
+    }
+}
+
 const updateParticipant = async (req, res) => {
     const {participantId} = req.params
     console.log(participantId)
@@ -224,4 +252,4 @@ const deleteAllParticipant = async (req, res) => {
     }
 }
 
-module.exports = {createParticipant, getParticipant, updateParticipant, deleteParticipant, deleteAllParticipant};
+module.exports = {createParticipant, getParticipant, getParticipantById, updateParticipant, deleteParticipant, deleteAllParticipant};

@@ -164,11 +164,8 @@ const getRoomById = async (req, res) => {
         const user = await User.findOne({user_id: userId})
             .populate({
                 path:'participants',
-                populate: {
-                    path:'room_id',
-                    select: '_id'
-                }
             })
+        console.log(user.participants)
         if (!user) {
             return res
                 .status(404)
@@ -178,6 +175,9 @@ const getRoomById = async (req, res) => {
                 })
         }
         for (let p of user.participants) {
+            // console.log(p)
+            // console.log(p.room_id._id)
+            // console.log(roomId)
             if (p.room_id._id.toString() === roomId.toString()) {
                 const room = await Room.findById(roomId).populate({
                     path: 'messages',
@@ -237,6 +237,7 @@ const getRoomById = async (req, res) => {
                 message: "user not in the room or room is not exist!"
             })
     } catch (e) {
+        console.log(e)
         return res
             .status(500)
             .json({

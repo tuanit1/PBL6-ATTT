@@ -9,6 +9,9 @@ router.post('/:userId&:roomId', participantController.createParticipant)
 // get all Participant
 router.get('/', participantController.getParticipant)
 
+// get all Participant by ID
+router.get('/:participantId', participantController.getParticipantById)
+
 // update participant
 router.put('/:participantId', participantController.updateParticipant)
 
