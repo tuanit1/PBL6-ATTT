@@ -42,15 +42,15 @@ DELETE http://localhost:8080/api/message/
 //get page message 
 #GET http://localhost:8080/api/message/page/{{roomId}}&{{page}}&{{step}}
 
-{
-  success: true,
-  data: [
-    {
-      message: {}, //đối tượng message
-      participant: {
-        ... giữ các đối tượng của participant trừ user_id đổi thành user,
-      },
-    }
-  ]
-}
+#{
+#  success: true,
+#  data: [
+#    {
+#      message: {}, //đối tượng message
+#      participant: {
+#        ... giữ các đối tượng của participant trừ user_id đổi thành user,
+#      },
+#    }
+#  ]
+#}
 

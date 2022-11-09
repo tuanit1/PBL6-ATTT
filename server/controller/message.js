@@ -63,6 +63,7 @@ const createMessage = async (req, res) => {
         room.messages.push(newMessage._id)
         await room.save()
         //socket
+        // io.emit('message' ,newMessage)
         res.json({
             success: true,
             message: 'Create message successfully',
@@ -125,18 +126,42 @@ const getMessageByRoomIdWithPagination = async (req, res) => {
                 message: "room not found"
             })
     try {
-        let data = []
+        let datas = []
+        let data = {}
         let count_message = await Message.estimatedDocumentCount()
         const messages = await Message
             .find({room_id: roomId})
             .sort({'time':"asc"})
             .skip(count_message - (perPage * page) - perPage)
             .limit(perPage)
-
-        let estimate = await Message.estimatedDocumentCount()
-        console.log(await Message.estimatedDocumentCount())
-
-        res.json({success: true, data: messages})
+        for (let message of messages) {
+            if (message) {
+                data.message = message
+                const participant = await Participant.findOne({
+                    user_id:message.user_id,
+                    room_id:message.room_id
+                })
+                    .populate({
+                        path: 'user_id',
+                        select: 'user_id name age phone image'
+                    })
+                if (participant) {
+                    let participant_save = {}
+                    participant_save._id = participant._id
+                    participant_save.nickname = participant.nickname
+                    participant_save.isAdmin = participant.isAdmin
+                    participant_save.timestamp = participant.timestamp
+                    participant_save.allowSendMSG = participant.allowSendMSG
+                    participant_save.allowSendFile = participant.allowSendFile
+                    participant_save.allowViewFile = participant.allowViewFile
+                    participant_save.user = participant.user_id
+                    participant_save.room_id = participant.room_id
+                    data.participant = participant_save
+                }
+                datas.push(data)
+            }
+        }
+        res.json({success: true, data: datas})
     } catch (e) {
         console.log(e)
         res.status(500).json({success: false, message: e})
