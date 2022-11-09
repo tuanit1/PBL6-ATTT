@@ -113,7 +113,7 @@ const getMessageByRoomId = async (req, res) => {
 }
 
 const getMessageByRoomIdWithPagination = async (req, res) => {
-    let perPage = 2
+    const perPage = (typeof req.params.step === 'undefined') ? 10 : req.params.step
     const page = (typeof req.params.page === 'undefined') ? 1 : req.params.page
     const roomId = req.params.roomId
     const room = await Room.findById(roomId)
