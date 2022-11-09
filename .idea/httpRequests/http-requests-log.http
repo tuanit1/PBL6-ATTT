@@ -1,3 +1,67 @@
+GET http://localhost:8080/api/user/
+
+<> 2022-11-09T115028.200.json
+
+###
+
+GET http://localhost:8080/api/user/JoXu8k5EKNOaZwUqSHzTQUgXm503
+
+<> 2022-11-09T115020.200.json
+
+###
+
+PUT http://localhost:8080/api/user/SIm5V7pekPTwhTZ4TGw23D4FpTs1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
+
+{
+  "name": "bmd1eWV",
+  "age": "MjE=",
+  "phone": "MDUyMjkxMjc0Mg=="
+}
+
+<> 2022-11-09T115011.200.json
+
+###
+
+GET http://localhost:8080/api/user/
+
+<> 2022-11-09T114941.200.json
+
+###
+
+GET http://localhost:8080/api/user/JoXu8k5EKNOaZwUqSHzTQUgXm503
+
+<> 2022-11-09T114831.200.json
+
+###
+
+PUT http://localhost:8080/api/user/JoXu8k5EKNOaZwUqSHzTQUgXm503
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
+
+{
+  "name": "bmd1eWV",
+  "age": "MjE=",
+  "phone": "MDUyMjkxMjc0Mg=="
+}
+
+<> 2022-11-09T114827.200.json
+
+###
+
+GET http://localhost:8080/api/user/JoXu8k5EKNOaZwUqSHzTQUgXm503
+
+<> 2022-11-09T114821.200.json
+
+###
+
+GET http://localhost:8080/api/user/A931rAdlZATBBnWaySfO2UuQO8v2
+
+<> 2022-11-09T114813.200.json
+
+###
+
 PUT http://localhost:8080/api/user/JoXu8k5EKNOaZwUqSHzTQUgXm503
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
@@ -398,54 +462,6 @@ GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2&6369fd05a3ec5210
 GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2&6369fd05a3ec5210643147f4
 
 <> 2022-11-08T140657.500.json
-
-###
-
-GET http://localhost:8080/api/room/
-
-<> 2022-11-08T140108.200.json
-
-###
-
-GET http://localhost:8080/api/user/
-
-<> 2022-11-08T140054.200.json
-
-###
-
-GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2&6369fd05a3ec5210643147f4
-
-<> 2022-11-08T140036.500.json
-
-###
-
-GET http://localhost:8080/api/room/A931rAdlZATBBnWaySfO2UuQO8v2&6364e01fa7ec08498dd9ba9e
-
-<> 2022-11-08T133531.200.json
-
-###
-
-GET http://localhost:8080/api/room/A931rAdlZATBBnWaySfO2UuQO8v2&6364e01fa7ec08498dd9ba9e
-
-<> 2022-11-08T133508.200.json
-
-###
-
-GET http://localhost:8080/api/room/SIm5V7pekPTwhTZ4TGw23D4FpTs1&6369255fed9493491ccaa58e
-
-<> 2022-11-08T105928.404.json
-
-###
-
-GET http://localhost:8080/api/room/SIm5V7pekPTwhTZ4TGw23D4FpTs1&636538da4005fd309a0a7d78
-
-<> 2022-11-08T105924.200.json
-
-###
-
-GET http://localhost:8080/api/room/SIm5V7pekPTwhTZ4TGw23D4FpTs1&6364e07fa7ec08498dd9babb
-
-<> 2022-11-08T105917.200.json
 
 ###
 

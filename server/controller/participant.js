@@ -12,6 +12,12 @@ const createParticipant = async (req, res) => {
                 success: false,
                 message: "User is not existed!"
             })
+    let data = {}
+    data._id = user._id
+    data.user_id = user.user_id
+    data.name = user.name
+    data.age = user.age
+    data.phone = user.phone
     const room = await Room.findById(roomId)
     if (!room)
         return res
@@ -48,7 +54,7 @@ const createParticipant = async (req, res) => {
             message: 'Create room successfully',
             data: {
                 _id: newParticipant._id,
-                user: user,
+                user: data,
                 room_id: room._id,
                 nickname: newParticipant.nickname,
                 isAdmin: newParticipant.isAdmin,
