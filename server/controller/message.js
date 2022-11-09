@@ -125,11 +125,17 @@ const getMessageByRoomIdWithPagination = async (req, res) => {
                 message: "room not found"
             })
     try {
+        let data = []
+        let count_message = await Message.estimatedDocumentCount()
         const messages = await Message
             .find({room_id: roomId})
             .sort({'time':"asc"})
-            .skip((perPage * page) - perPage)
+            .skip(count_message - (perPage * page) - perPage)
             .limit(perPage)
+
+        let estimate = await Message.estimatedDocumentCount()
+        console.log(await Message.estimatedDocumentCount())
+
         res.json({success: true, data: messages})
     } catch (e) {
         console.log(e)
