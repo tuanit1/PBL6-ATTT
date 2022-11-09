@@ -37,3 +37,20 @@ DELETE http://localhost:8080/api/message/634ad29c5a7e1578ce47a5f0
 #DELETE http://localhost:8080/api/message/
 DELETE http://localhost:8080/api/message/
 
+
+###7
+//get page message 
+#GET http://localhost:8080/api/message/page/{{roomId}}&{{page}}&{{step}}
+
+{
+  success: true,
+  data: [
+    {
+      message: {}, //đối tượng message
+      participant: {
+        ... giữ các đối tượng của participant trừ user_id đổi thành user,
+      },
+    }
+  ]
+}
+
