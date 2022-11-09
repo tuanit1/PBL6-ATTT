@@ -115,6 +115,55 @@ const getUserById = async (req, res) => {
     }
 }
 
+const updateUser = async (req, res) => {
+    const {uid} = req.params
+    console.log(uid)
+    const user = await User.findOne({user_id: uid})
+    if (!user) {
+        return res
+            .status(400)
+            .json({
+                success: false,
+                message: "User is not existed!"
+            })
+    }
+    const {
+        name,
+        age,
+        phone,
+        image
+    } = req.body
+    try {
+        const updateUser = {
+            name: name,
+            age: age,
+            phone: phone,
+            image: image
+        }
+        const userUpdateCondition = {_id: user._id}
+        let updatedUser = await User.findOneAndUpdate(
+            userUpdateCondition,
+            updateUser,
+            {
+                new: true
+            }
+        )
+        if (!updatedUser) {
+            return res
+                .status(401)
+                .json({success: false, message: "User not found"})
+        }
+        res.json({
+            success: true,
+            message: "Updated!",
+            data: updatedUser
+        })
+    } catch (e) {
+        console.log(e)
+        return res.status(500).json({success: false, message: "" + e});
+    }
+}
+
 const deleteUser = async (req, res) => {
     try {
         const user = await User.findOne({user_id: req.params.uid})
@@ -214,4 +263,4 @@ const deleteAllUser = async (req, res) => {
     }
 }
 
-module.exports = {createUser, getUser, getUserById, deleteUser, deleteAllUser}
+module.exports = {createUser, getUser, getUserById, updateUser, deleteUser, deleteAllUser}

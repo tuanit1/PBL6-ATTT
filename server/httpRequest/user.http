@@ -21,11 +21,24 @@ GET http://localhost:8080/api/user/
 GET http://localhost:8080/api/user/A931rAdlZATBBnWaySfO2UuQO8v2
 
 ###4
+//update user
+#PUT http://localhost:8080/api/user/{{uid}}
+PUT http://localhost:8080/api/user/JoXu8k5EKNOaZwUqSHzTQUgXm503
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
+
+{
+  "name": "bmd1eWVu",
+  "age": "MjE=",
+  "phone": "MDUyMjkxMjc0Mg=="
+}
+
+###5
 //delete user
 #DELETE http://localhost:8080/api/user/{{uid}}
 DELETE http://localhost:8080/api/user/2ZFMFC9EXnbNFvjYLHoaHD8vcBq2
 
-###5
+###6
 //delete all user
 #DELETE http://localhost:8080/api/user/
 DELETE http://localhost:8080/api/user/

@@ -157,7 +157,7 @@ const updateParticipant = async (req, res) => {
             data: updatedParticipant
         })
     } catch (e) {
-        return res.status(500).json({success: false, message: "" + error});
+        return res.status(500).json({success: false, message: "" + e});
     }
 }
 
