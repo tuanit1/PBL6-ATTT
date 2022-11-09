@@ -127,6 +127,7 @@ const getMessageByRoomIdWithPagination = async (req, res) => {
     try {
         const messages = await Message
             .find({room_id: roomId})
+            .sort({'time':"desc"})
             .skip((perPage * page) - perPage)
             .limit(perPage)
         res.json({success: true, data: messages})
