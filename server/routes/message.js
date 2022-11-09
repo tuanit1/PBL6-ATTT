@@ -13,7 +13,7 @@ router.get('/', messageController.getMessage)
 router.get('/room/:roomId', messageController.getMessageByRoomId)
 
 //get by pagination
-router.get('/page/:page?&:roomId', messageController.getMessageByRoomIdWithPagination );
+router.get('/page/:roomId&:page?&:step?', messageController.getMessageByRoomIdWithPagination );
 
 //Delete Message
 router.delete('/:msgId', messageController.deleteMessage)
