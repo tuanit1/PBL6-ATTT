@@ -5,6 +5,23 @@ const userRouter = require('./routes/user')
 const participantRouter = require('./routes/participant')
 const roomRouter = require('./routes/room')
 const messageRouter = require('./routes/message')
+
+const app = express()
+const http = require('http')
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const ioServer = new Server(server);
+ioServer.on('connection', () => {
+    console.log("message connect")
+    ioServer.emit('test', 'hii')
+})
+const message_nsp = ioServer.of('/message')
+message_nsp.on('connection', () => {
+    console.log("message connect")
+})
+message_nsp.on('message', data => {
+    console.log(data)
+})
 //database
 const connectDB = async () => {
     try {
@@ -20,17 +37,18 @@ const connectDB = async () => {
 }
 connectDB()
 
-const app = express()
+
+
 app.use(express.json())
 
 app.use('/api/user', userRouter)
 app.use('/api/participant', participantRouter)
 app.use('/api/room', roomRouter)
-app.use('/api/message', messageRouter)
+app.use('/api/message', messageRouter(ioServer))
 app.get('/', (req, res) => res.send('Hello world'))
 
 
 
 const PORT = 8080
 
-app.listen(PORT, () => console.log(`Server on port ${PORT}`))
+server.listen(PORT, () => console.log(`Server on port ${PORT}`))
