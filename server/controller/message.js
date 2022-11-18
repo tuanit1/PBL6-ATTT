@@ -71,9 +71,32 @@ class MessageController {
             await user.save()
             room.messages.push(newMessage._id)
             await room.save()
-            //socket
 
-            this.socket.emit('message' ,newMessage)
+            //socket
+            let data = {}
+            data.message = message
+            const participant = await Participant.findOne({
+                user_id:message.user_id,
+                room_id:message.room_id
+            })
+                .populate({
+                    path: 'user_id',
+                    select: 'user_id name age phone image'
+                })
+            if (participant) {
+                let participant_save = {}
+                participant_save._id = participant._id
+                participant_save.nickname = participant.nickname
+                participant_save.isAdmin = participant.isAdmin
+                participant_save.timestamp = participant.timestamp
+                participant_save.allowSendMSG = participant.allowSendMSG
+                participant_save.allowSendFile = participant.allowSendFile
+                participant_save.allowViewFile = participant.allowViewFile
+                participant_save.user = participant.user_id
+                participant_save.room_id = participant.room_id
+                data.participant = participant_save
+            }
+            this.socket.emit('message' ,data)
             res.json({
                 success: true,
                 message: 'Create message successfully',
@@ -147,7 +170,6 @@ class MessageController {
             for (let message of messages) {
                 if (message) {
                     let data = {}
-                    console.log(message._id)
                     data.message = message
                     const participant = await Participant.findOne({
                         user_id:message.user_id,
