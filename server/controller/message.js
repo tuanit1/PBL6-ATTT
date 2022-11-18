@@ -137,8 +137,7 @@ class MessageController {
                     message: "room not found"
                 })
         try {
-            let datas = []
-            let data = {}
+            const datas = [undefined]
             let count_message = await Message.countDocuments({room_id: roomId})
             const messages = await Message
                 .find({room_id: roomId})
@@ -147,6 +146,8 @@ class MessageController {
                 .limit(perPage)
             for (let message of messages) {
                 if (message) {
+                    let data = {}
+                    console.log(message._id)
                     data.message = message
                     const participant = await Participant.findOne({
                         user_id:message.user_id,
@@ -157,6 +158,7 @@ class MessageController {
                             select: 'user_id name age phone image'
                         })
                     if (participant) {
+
                         let participant_save = {}
                         participant_save._id = participant._id
                         participant_save.nickname = participant.nickname
@@ -174,7 +176,6 @@ class MessageController {
             }
             res.json({success: true, data: datas})
         } catch (e) {
-            console.log(e)
             res.status(500).json({success: false, message: e})
         }
     }
