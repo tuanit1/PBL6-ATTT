@@ -80,7 +80,7 @@ class MessageController {
 
             //socket
             let data = {}
-            data.message = message
+            data.message = newMessage
             // const participantSk = await Participant.findOne({
             //     user_id:message.user_id,
             //     room_id:message.room_id
