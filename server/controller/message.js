@@ -161,6 +161,13 @@ class MessageController {
         try {
             const datas = []
             let count_message = await Message.countDocuments({room_id: roomId})
+            if (count_message === 0) {
+                return res
+                    .json({
+                        success: true,
+                        data: datas
+                    })
+            }
             const messages = await Message
                 .find({room_id: roomId})
                 .sort({'time':"asc"})
