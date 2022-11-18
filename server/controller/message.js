@@ -50,7 +50,13 @@ class MessageController {
                     success: false,
                     message: "Room is not existing!"
                 })
-        const participant = await Participant.findOne({user_id: user._id, room_id: roomId})
+        const participant = await Participant.findOne({
+            user_id: user._id, room_id: roomId
+        })
+            .populate({
+                path: 'user_id',
+                select: 'user_id name age phone image'
+            })
         if (!participant)
             return res
                 .status(404)
@@ -66,23 +72,23 @@ class MessageController {
                 user_id: user,
                 room_id: room
             })
-            await newMessage.save()
+            // await newMessage.save()
             user.messages.push(newMessage._id)
-            await user.save()
+            // await user.save()
             room.messages.push(newMessage._id)
-            await room.save()
+            // await room.save()
 
             //socket
             let data = {}
             data.message = message
-            const participant = await Participant.findOne({
-                user_id:message.user_id,
-                room_id:message.room_id
-            })
-                .populate({
-                    path: 'user_id',
-                    select: 'user_id name age phone image'
-                })
+            // const participantSk = await Participant.findOne({
+            //     user_id:message.user_id,
+            //     room_id:message.room_id
+            // })
+            //     .populate({
+            //         path: 'user_id',
+            //         select: 'user_id name age phone image'
+            //     })
             if (participant) {
                 let participant_save = {}
                 participant_save._id = participant._id
@@ -96,6 +102,7 @@ class MessageController {
                 participant_save.room_id = participant.room_id
                 data.participant = participant_save
             }
+            console.log(data)
             this.socket.emit('message' ,data)
             res.json({
                 success: true,
