@@ -81,7 +81,7 @@ class MessageController {
             //socket
             let message_socket = {}
             message_socket._id = newMessage._id
-            message_socket.text = newMessage.text
+            message_socket.message = newMessage.message
             message_socket.type = newMessage.type
             message_socket.time = newMessage.time
             message_socket.user_id = user._id
