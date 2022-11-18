@@ -72,15 +72,23 @@ class MessageController {
                 user_id: user,
                 room_id: room
             })
-            await newMessage.save()
+            // await newMessage.save()
             user.messages.push(newMessage._id)
-            await user.save()
+            // await user.save()
             room.messages.push(newMessage._id)
-            await room.save()
+            // await room.save()
 
             //socket
+            let message_socket = {}
+            message_socket._id = newMessage._id
+            message_socket.text = newMessage.text
+            message_socket.type = newMessage.type
+            message_socket.time = newMessage.time
+            message_socket.user_id = user._id
+            message_socket.room_id = room._id
+
             let data = {}
-            data.message = newMessage
+            data.message = message_socket
             if (participant) {
                 let participant_save = {}
                 participant_save._id = participant._id
