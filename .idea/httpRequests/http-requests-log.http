@@ -435,33 +435,3 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN
 
 ###
 
-PUT http://localhost:8080/api/user/JoXu8k5EKNOaZwUqSHzTQUgXm503
-
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
-
-{
-  "name": "bmd1eWVu",
-  "age": "MjE=",
-  "phone": "MDUyMjkxMjc0Mg=="
-}
-
-<> 2022-11-09T093914.200.json
-
-###
-
-PUT http://localhost:8080/api/user/JoXu8k5EKNOaZwUqSHzTQUgXm503
-
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
-
-{
-  "name": "bmd1eWVu",
-  "age": "MjE=",
-  "phone": "MDUyMjkxMjc0Mg=="
-}
-
-<> 2022-11-09T093752.500.json
-
-###
-
