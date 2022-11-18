@@ -72,11 +72,11 @@ class MessageController {
                 user_id: user,
                 room_id: room
             })
-            // await newMessage.save()
+            await newMessage.save()
             user.messages.push(newMessage._id)
-            // await user.save()
+            await user.save()
             room.messages.push(newMessage._id)
-            // await room.save()
+            await room.save()
 
             //socket
             let message_socket = {}
