@@ -18,7 +18,7 @@ GET http://localhost:8080/api/message/
 ###3
 //get all message by roomId
 #GET http://localhost:8080/api/message/room/{{roomId}}
-GET http://localhost:8080/api/message/room/634ad102b48fbd4e6e2b5185
+GET http://localhost:8080/api/message/room/6364e01fa7ec08498dd9ba9e
 
 ###4
 //get pagination

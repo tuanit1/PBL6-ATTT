@@ -5,7 +5,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
 
 {
-  "user_id": "2ZFMFC9EXnbNFvjYLHoaHD8vcBq2",
+  "user_id": "2ZFMFC9EXnbNFvjYLHoaHD8vc",
   "name": "aG9h",
   "age": "MjE=",
   "phone": "MDUyMjkxMjc0Mg=="
