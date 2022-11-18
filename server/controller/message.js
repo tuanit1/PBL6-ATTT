@@ -139,7 +139,7 @@ class MessageController {
         try {
             let datas = []
             let data = {}
-            let count_message = await Message.estimatedDocumentCount()
+            let count_message = await Message.countDocuments({room_id: roomId})
             const messages = await Message
                 .find({room_id: roomId})
                 .sort({'time':"asc"})

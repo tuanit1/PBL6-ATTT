@@ -1,7 +1,7 @@
 //create message
 ###1
 #POST http://localhost:8080/api/message/{{userId}}&{{roomId}}
-POST http://localhost:8080/api/message/A931rAdlZATBBnWaySfO2UuQO8v2&636b44ccbc75f879f864e42a
+POST http://localhost:8080/api/message/6Uj630yjijSYLAEvQ1WL90Tfdra2&6364e01fa7ec08498dd9ba9e
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
 
@@ -18,7 +18,7 @@ GET http://localhost:8080/api/message/
 ###3
 //get all message by roomId
 #GET http://localhost:8080/api/message/room/{{roomId}}
-GET http://localhost:8080/api/message/room/634ad102b48fbd4e6e2b5185
+GET http://localhost:8080/api/message/room/6364e01fa7ec08498dd9ba9e
 
 ###4
 //get pagination
