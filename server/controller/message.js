@@ -137,7 +137,7 @@ class MessageController {
                     message: "room not found"
                 })
         try {
-            const datas = [undefined]
+            const datas = []
             let count_message = await Message.countDocuments({room_id: roomId})
             const messages = await Message
                 .find({room_id: roomId})
