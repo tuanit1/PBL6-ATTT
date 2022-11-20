@@ -176,11 +176,30 @@ class MessageController {
                         data: datas
                     })
             }
+            let limit = perPage
+            if (count_message-perPage*page-perPage<0) {
+                limit = count_message-perPage*page
+                if (limit <= 0) {
+                    return res
+                    .json({
+                        success: true,
+                        data: datas
+                    })
+                }
+
+            }
+            // console.log({
+            //     count_message: count_message,
+            //     perPage: perPage,
+            //     page: page,
+            //     skip: count_message - (perPage * page) - limit,
+            //     limit: limit,
+            // })
             const messages = await Message
                 .find({room_id: roomId})
                 .sort({'time':"asc"})
-                .skip(count_message - (perPage * page) - perPage)
-                .limit(perPage)
+                .skip(count_message - (perPage * page) - limit)
+                .limit(limit)
             for (let message of messages) {
                 if (message) {
                     let data = {}

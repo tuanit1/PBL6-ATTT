@@ -23,7 +23,7 @@ GET http://localhost:8080/api/message/room/6364e07fa7ec08498dd9babb
 ###4
 //get pagination
 #GET http://localhost:8080/api/message/page/{{roomId}}&{{page}}&{{step}}
-GET http://localhost:8080/api/message/page/6364e07fa7ec08498dd9babb&0&10
+GET http://localhost:8080/api/message/page/6364e07fa7ec08498dd9babb&2&3
 
 
 ###5
