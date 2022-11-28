@@ -13,7 +13,7 @@ class MessageController {
     }
 
     createMessage = async (req, res) => {
-        let types = ['text', 'img', 'file']
+        let types = ['text', 'image', 'file']
         const {message, type} = req.body
 
         if (!message)

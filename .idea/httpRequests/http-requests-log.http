@@ -1,3 +1,42 @@
+POST http://localhost:8080/api/message/6Uj630yjijSYLAEvQ1WL90Tfdra2&6364e01fa7ec08498dd9ba9e
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
+
+{
+  "message": "Ymtkbg==",
+  "type": "image"
+}
+
+<> 2022-11-28T152140.200.json
+
+###
+
+POST http://localhost:8080/api/message/6Uj630yjijSYLAEvQ1WL90Tfdra2&6364e01fa7ec08498dd9ba9e
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
+
+{
+  "message": "Ymtkbg==",
+  "type": "img"
+}
+
+<> 2022-11-28T152122.200.json
+
+###
+
+POST http://localhost:8080/api/message/6Uj630yjijSYLAEvQ1WL90Tfdra2&6364e01fa7ec08498dd9ba9e
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
+
+{
+  "message": "Ymtkbg==",
+  "type": "image"
+}
+
+<> 2022-11-28T152100.400.json
+
+###
+
 GET http://localhost:8080/api/message/page/6364e07fa7ec08498dd9babb&2&3
 
 <> 2022-11-20T140014.200.json
@@ -277,38 +316,6 @@ GET http://localhost:8080/api/message/page/6364e07fa7ec08498dd9babb&0&10
 GET http://localhost:8080/api/message/room/6364e07fa7ec08498dd9babb
 
 <> 2022-11-20T133711.200.json
-
-###
-
-GET http://localhost:8080/api/message/page/6364e07fa7ec08498dd9babb&0&10
-
-<> 2022-11-20T133602.500.json
-
-###
-
-POST http://localhost:8080/api/message/6Uj630yjijSYLAEvQ1WL90Tfdra2&6364e01fa7ec08498dd9ba9e
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
-
-{
-  "message": "Ymtkbg==",
-  "type": "text"
-}
-
-<> 2022-11-18T225139.200.json
-
-###
-
-POST http://localhost:8080/api/message/6Uj630yjijSYLAEvQ1WL90Tfdra2&6364e01fa7ec08498dd9ba9e
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
-
-{
-  "message": "Ymtkbg==",
-  "type": "text"
-}
-
-<> 2022-11-18T225039.200.json
 
 ###
 
