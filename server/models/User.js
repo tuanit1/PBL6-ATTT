@@ -30,7 +30,12 @@ const UserSchema = new Schema({
     participants: [{
         type: Schema.Types.ObjectId,
         ref: "participant"
-    }]
+    }],
+    refreshToken: {
+        type: String,
+        require: false,
+        default: null
+    }
 })
 
 module.exports = mongoose.model('user', UserSchema)

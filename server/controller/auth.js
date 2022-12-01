@@ -1,0 +1,118 @@
+require('dotenv').config()
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+
+const generateTokens = payload => {
+    // console.log(payload.user_id)
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '1h'
+    })
+
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+        expiresIn: '1h'
+    })
+    return {accessToken, refreshToken}
+}
+
+const updateRefreshToken = async (user_id, refreshToken) => {
+    let users = await User.find()
+    users = users.map(async user => {
+        if (user.user_id === user_id) {
+            user = {
+                user_id: user.user_id,
+                name: user.name,
+                age: user.age,
+                phone: user.phone,
+                image: user.image,
+                messages: user.messages,
+                participants: user.participants,
+                refreshToken: refreshToken
+            }
+            let updatedUser = await User.findOneAndUpdate(
+                {user_id: user_id},
+                user,
+                {new: true})
+            // console.log(user)
+            return user
+        }
+        return user
+    })
+}
+
+const login = async (req, res) => {
+    const { user_id } = req.params
+    try {
+        const user = await User.findOne({user_id: user_id})
+        if (!user) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "User not found!"
+                })
+        }
+
+        const tokens = generateTokens({
+            user_id: user.user_id,
+            participants: user.participants
+        })
+        updateRefreshToken(user_id, tokens.refreshToken)
+
+        // console.log(user.refreshToken)
+
+        return res
+            .json({
+                success: true,
+                token: tokens
+            })
+    } catch (e) {
+        console.log(e)
+        return res
+            .status(505)
+            .json({
+                success: false,
+                message: "" + e
+            })
+    }
+}
+
+const rfToken = async (req, res) => {
+    const {refreshToken} = req.body
+    if (!refreshToken)
+        return res
+            .status(401)
+            .json({
+                success: false,
+                message: "fill token!"
+            })
+    try {
+        const user = await User.findOne({refreshToken: refreshToken})
+        console.log(user)
+        if (!user) {
+            return res
+                .status(403)
+                .json({
+                    success: false
+                })
+        }
+        console.log(user.user_id)
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+        const tokens = generateTokens({
+            user_id: user.user_id,
+            participants: user.participants
+        })
+        updateRefreshToken(user.user_id, tokens.refreshToken)
+        return res
+            .json({
+                success: true,
+                token: tokens
+            })
+
+    } catch (e) {
+        console.log(e)
+        return res
+            .status(403)
+    }
+}
+
+module.exports = {login, rfToken}
