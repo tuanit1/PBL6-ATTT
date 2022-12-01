@@ -89,7 +89,16 @@ const getUser = async (req, res) => {
 
 const getUserById = async (req, res) => {
     const {uid} = req.params
-    console.log(uid)
+
+    const {user_id} = req
+    if (user_id !== uid) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
+            })
+    }
     const user = await User.findOne({user_id: uid})
     if (!user) {
         return res
@@ -117,7 +126,17 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const {uid} = req.params
-    console.log(uid)
+
+    const {user_id} = req
+    if (user_id !== uid) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
+            })
+    }
+
     const user = await User.findOne({user_id: uid})
     if (!user) {
         return res
@@ -166,6 +185,16 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
+        const {user_id} = req
+        if (user_id !== req.params.uid) {
+            return res
+                .status(403)
+                .json({
+                    success: false,
+                    message: "You can't access this domain!"
+                })
+        }
+
         const user = await User.findOne({user_id: req.params.uid})
         if (!user) {
             return res
@@ -263,4 +292,44 @@ const deleteAllUser = async (req, res) => {
     }
 }
 
-module.exports = {createUser, getUser, getUserById, updateUser, deleteUser, deleteAllUser}
+//debug api
+const getUser_idBy_id = async (req, res) => {
+    const uid = req.params.user_id
+
+    const {user_id} = req
+    if (user_id !== uid) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
+            })
+    }
+
+    try {
+        const user = await User.findById(user_id)
+        if (!user)
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message: "User not found!"
+                })
+
+        return res
+            .json({
+                success: true,
+                data: user.user_id
+            })
+    } catch (e) {
+        console.log(e)
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: "internal server"
+            })
+    }
+
+}
+module.exports = {createUser, getUser, getUserById, updateUser, deleteUser, deleteAllUser, getUser_idBy_id}

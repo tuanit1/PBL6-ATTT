@@ -16,6 +16,17 @@ const createRoomPublic = async (req, res) => {
             })
 
     const {userId} = req.params
+
+    const {user_id} = req
+    if (user_id !== userId) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
+            })
+    }
+
     const user = await User.findOne({user_id: userId})
     if (!user)
         return res
@@ -65,10 +76,20 @@ const createRoomPublic = async (req, res) => {
     }
 }
 
-
 //2
 const createRoomPrivate = async (req, res) => {
     const {userId, receiverId} = req.params
+
+    const {user_id} = req
+    if (user_id !== userId) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
+            })
+    }
+
     //validate
     const user = await User.findOne({user_id: userId})
     if (!user)
@@ -118,7 +139,7 @@ const createRoomPrivate = async (req, res) => {
         res.json({
             success: true,
             message: 'Create participant successfully',
-            data : {
+            data: {
                 _id: newRoom._id,
                 name: newRoom.name,
                 type: newRoom.type,
@@ -134,7 +155,6 @@ const createRoomPrivate = async (req, res) => {
             })
     }
 }
-
 
 //3
 const getRoom = async (req, res) => {
@@ -155,18 +175,27 @@ const getRoom = async (req, res) => {
     }
 }
 
-
 //4
 const getRoomById = async (req, res) => {
-    const {userId,roomId} = req.params
+    const {userId, roomId} = req.params
+
+    const {user_id} = req
+    if (user_id !== userId) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
+            })
+    }
+
     try {
         let data = {}
         const user = await User.findOne({user_id: userId})
             .populate({
-                path:'participants',
+                path: 'participants',
             })
 
-        console.log(user.participants)
         if (!user) {
             return res
                 .status(404)
@@ -225,8 +254,7 @@ const getRoomById = async (req, res) => {
                             room.participant = participant_save
                         }
                     }
-                }
-                else {
+                } else {
                     room.participant = null
                 }
                 return res
@@ -255,7 +283,19 @@ const getRoomById = async (req, res) => {
 
 //5
 const getRoomPrivateByUserId = async (req, res) => {
+
     const {userId} = req.params
+
+    const {user_id} = req
+    if (user_id !== userId) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
+            })
+    }
+
     const user = await User.findOne({user_id: userId})
     if (!user) {
         return res
@@ -331,10 +371,20 @@ const getRoomPrivateByUserId = async (req, res) => {
     }
 }
 
-
 //6
 const getRoomGroupByUserId = async (req, res) => {
     const {userId} = req.params
+
+    const {user_id} = req
+    if (user_id !== userId) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
+            })
+    }
+
     const user = await User.findOne({user_id: userId})
     if (!user) {
         return res
@@ -351,8 +401,8 @@ const getRoomGroupByUserId = async (req, res) => {
             participants.push(participant)
         }
         let data = []
-        let room = {room: null, message: null, participant: null}
         for (let p of participants) {
+            let room = {room: null, message: null, participant: null}
             if (p)
                 if (p.room_id) {
                     let roomDB = await Room.findById(p.room_id)
@@ -414,10 +464,20 @@ const getRoomGroupByUserId = async (req, res) => {
     }
 }
 
-
 //7
 const getRoomPrivateByUsers = async (req, res) => {
     const {userId, partnerId} = req.params
+
+    const {user_id} = req
+    if (user_id !== userId) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
+            })
+    }
+
     const user = await User.findOne({user_id: userId})
     if (!user) {
         return res
@@ -523,6 +583,17 @@ const getRoomPrivateByUsers = async (req, res) => {
 //8
 const getRoomByUserId = async (req, res) => {
     const {userId} = req.params
+
+    const {user_id} = req
+    if (user_id !== userId) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
+            })
+    }
+
     const user = await User.findOne({user_id: userId})
     if (!user) {
         return res
@@ -580,8 +651,7 @@ const getRoomByUserId = async (req, res) => {
                                     room.participant = participant_save
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             room.participant = null
                         }
                         data.push(room)
@@ -612,44 +682,75 @@ const deleteRoom = async (req, res) => {
             _id: req.params.rid,
             user: req.userId
         }
-        const room = await Room.findById(roomDeleteCondition._id)
-        if (!room) {
-            return res
-                .status(401)
-                .json({
-                    success: false,
-                    message: "Room not found"
-                })
-        }
-        if (room.messages) {
-            room.messages.map(async (item) => {
-                let msg = await Message.findById(item._id.toString())
-                if (msg) {
-                    msg.room_id = undefined
-                    msg.save()
+
+        const {participants} = req
+        for (let participant of participants) {
+            let participantJWT = await Participant.findById(participant)
+            if (participantJWT) {
+                if (participantJWT.room_id.toString() === req.params.rid.toString()) {
+                    if (participantJWT.isAdmin === true) {
+                        const room = await Room.findById(roomDeleteCondition._id)
+                        if (!room) {
+                            return res
+                                .status(401)
+                                .json({
+                                    success: false,
+                                    message: "Room not found"
+                                })
+                        }
+
+                        if (room.participants) {
+                            room.participants.map(async (item) => {
+                                let participant = await Participant.findOneAndDelete({
+                                    _id: item._id.toString(),
+                                    user: req.userId
+                                })
+                                if (participant.user_id) {
+                                    const user = await User.findById(participant.user_id)
+                                    if (user)
+                                        user.participants = user.participants.filter(item => item._id.toString() !== participant._id.toString())
+                                    user.save()
+                                }
+                            })
+                        }
+
+                        if (room.messages) {
+                            room.messages.map(async (item) => {
+                                let msg = await Message.findById(item._id.toString())
+                                if (msg) {
+                                    msg.room_id = undefined
+                                    msg.save()
+                                }
+                            })
+                        }
+
+                        const deleteRoom = await Room.findOneAndDelete(roomDeleteCondition)
+                        if (!deleteRoom)
+                            return res
+                                .status(401)
+                                .json({
+                                    success: false,
+                                    message: "Room not exist"
+                                })
+                        res.json({success: true, data: deleteRoom})
+                    } else {
+                        return res
+                            .status(403)
+                            .json({
+                                success: false,
+                                message: "You're not allowed to do this!"
+                            })
+                    }
                 }
-            })
+            }
         }
-        if (room.participants) {
-            room.participants.map(async (item) => {
-                let participant = await Participant.findOneAndDelete({_id:item._id.toString(),user: req.userId})
-                if (participant.user_id) {
-                    const user = await User.findById(participant.user_id)
-                    if (user)
-                        user.participants = user.participants.filter(item => item._id.toString() !== participant._id.toString())
-                    user.save()
-                }
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "You can't access this domain!"
             })
-        }
-        const deleteRoom = await Room.findOneAndDelete(roomDeleteCondition)
-        if (!deleteRoom)
-            return res
-                .status(401)
-                .json({
-                    success: false,
-                    message: "Room not exist"
-                })
-        res.json({success: true, data: deleteRoom})
+
     } catch (e) {
         return res.status(500).json({success: false, message: e});
     }
@@ -680,7 +781,7 @@ const deleteAllRoom = async (req, res) => {
             }
             if (room.participants) {
                 room.participants.map(async (item) => {
-                    let participant = await Participant.findOneAndDelete({_id:item._id.toString(),user: req.userId})
+                    let participant = await Participant.findOneAndDelete({_id: item._id.toString(), user: req.userId})
                     if (participant.user_id) {
                         const user = await User.findById(participant.user_id)
                         if (user)
@@ -715,62 +816,17 @@ const deleteAllRoom = async (req, res) => {
                 message: e
             })
     }
-    // try {
-    //     const rooms = await Room.find({})
-    //     if (!rooms) {
-    //         return res
-    //             .status(401)
-    //             .json({
-    //                 success: false,
-    //                 message: "there is not any room"
-    //             })
-    //     }
-    //     let deletedRooms = []
-    //     for (let room of rooms) {
-    //         if (room.messages) {
-    //             room.messages.map(async (item) => {
-    //                 let msg = await Message.findById(item._id.toString())
-    //                 if (msg) {
-    //                     msg.room_id = undefined
-    //                     msg.save()
-    //                 }
-    //             })
-    //         }
-    //         if (room.participants) {
-    //             room.participants.map(async (item) => {
-    //                 let participant = await Participant.findById(item._id.toString())
-    //                 if (participant) {
-    //                     participant.room_id = undefined
-    //                     participant.save()
-    //                 }
-    //             })
-    //         }
-    //         const deleteRoom = await Room.findOneAndDelete({
-    //             _id: room._id,
-    //             user: req.userId
-    //         })
-    //         if (!deleteRoom)
-    //             return res
-    //                 .status(401)
-    //                 .json({
-    //                     success: false,
-    //                     message: "Room not exist"
-    //                 })
-    //         deletedRooms.push(deleteRoom)
-    //     }
-    //     return res
-    //         .json({
-    //             success: true,
-    //             data: deletedRooms
-    //         })
-    // } catch (e) {
-    //     return res
-    //         .status(500)
-    //         .json({
-    //             success: false,
-    //             message: e
-    //         })
-    // }
 }
 
-module.exports = {createRoomPublic, createRoomPrivate, getRoom, getRoomById, getRoomPrivateByUserId, getRoomGroupByUserId, getRoomPrivateByUsers, getRoomByUserId, deleteRoom, deleteAllRoom};
+module.exports = {
+    createRoomPublic,
+    createRoomPrivate,
+    getRoom,
+    getRoomById,
+    getRoomPrivateByUserId,
+    getRoomGroupByUserId,
+    getRoomPrivateByUsers,
+    getRoomByUserId,
+    deleteRoom,
+    deleteAllRoom
+};

@@ -7,12 +7,24 @@ const Participant = require("../models/Participant");
 // const socket = new ioSocket(ioServer)
 
 class MessageController {
-    constructor( ioServer ) {
+    constructor(ioServer) {
         this.ioServer = ioServer;
         this.socket = this.ioServer.of("/message")
     }
 
     createMessage = async (req, res) => {
+        const {userId, roomId} = req.params
+
+        const {user_id} = req
+        if (user_id !== userId) {
+            return res
+                .status(403)
+                .json({
+                    success: false,
+                    message: "You can't access this domain!"
+                })
+        }
+
         let types = ['text', 'image', 'file']
         const {message, type} = req.body
 
@@ -31,7 +43,6 @@ class MessageController {
                     message: "choose the type!"
                 })
 
-        const {userId, roomId} = req.params
 
         const user = await User.findOne({user_id: userId})
         if (!user) {
@@ -72,11 +83,11 @@ class MessageController {
                 user_id: user,
                 room_id: room
             })
-            await newMessage.save()
+            // await newMessage.save()
             user.messages.push(newMessage._id)
-            await user.save()
+            // await user.save()
             room.messages.push(newMessage._id)
-            await room.save()
+            // await room.save()
 
             //socket
             let message_socket = {}
@@ -103,7 +114,7 @@ class MessageController {
                 data.participant = participant_save
             }
             console.log(data)
-            this.socket.emit('message' ,data)
+            this.socket.emit('message', data)
             res.json({
                 success: true,
                 message: 'Create message successfully',
@@ -138,98 +149,130 @@ class MessageController {
 
     getMessageByRoomId = async (req, res) => {
         const {roomId} = req.params
-        const room = await Room.findById(roomId)
-        if (!room)
+
+        try {
+            const {participants} = req
+            for (let participant of participants) {
+                let participantJWT = await Participant.findById(participant)
+                if (participantJWT) {
+                    if (participantJWT.room_id.toString() === roomId.toString()) {
+                        const room = await Room.findById(roomId)
+                        if (!room)
+                            return res
+                                .status(404)
+                                .json({
+                                    success: false,
+                                    message: "room not found"
+                                })
+                        const allMessage = await Message.find({room_id: roomId})
+                        res.json({success: true, data: allMessage})
+                    }
+                }
+            }
             return res
-                .status(404)
+                .status(403)
                 .json({
                     success: false,
-                    message: "room not found"
+                    message: "You can't access this domain!"
                 })
-        try {
-            const allMessage = await Message.find({room_id: roomId})
-            res.json({success: true, data: allMessage})
         } catch (e) {
             res.status(500).json({success: false, message: e})
         }
+
+
     }
 
     getMessageByRoomIdWithPagination = async (req, res) => {
         const perPage = (typeof req.params.step === 'undefined') ? 10 : req.params.step
         const page = (typeof req.params.page === 'undefined') ? 1 : req.params.page
         const roomId = req.params.roomId
-        const room = await Room.findById(roomId)
-        if (!room)
+        try {
+
+            const {participants} = req
+            for (let participant of participants) {
+                let participantJWT = await Participant.findById(participant)
+                if (participantJWT) {
+                    if (participantJWT.room_id.toString() === req.params.rid.toString()) {
+                        const room = await Room.findById(roomId)
+                        if (!room)
+                            return res
+                                .status(404)
+                                .json({
+                                    success: false,
+                                    message: "room not found"
+                                })
+                        const datas = []
+                        let count_message = await Message.countDocuments({room_id: roomId})
+                        if (count_message === 0) {
+                            return res
+                                .json({
+                                    success: true,
+                                    data: datas
+                                })
+                        }
+                        let limit = perPage
+                        if (count_message - perPage * page - perPage < 0) {
+                            limit = count_message - perPage * page
+                            if (limit <= 0) {
+                                return res
+                                    .json({
+                                        success: true,
+                                        data: datas
+                                    })
+                            }
+
+                        }
+                        // console.log({
+                        //     count_message: count_message,
+                        //     perPage: perPage,
+                        //     page: page,
+                        //     skip: count_message - (perPage * page) - limit,
+                        //     limit: limit,
+                        // })
+                        const messages = await Message
+                            .find({room_id: roomId})
+                            .sort({'time': "asc"})
+                            .skip(count_message - (perPage * page) - limit)
+                            .limit(limit)
+                        for (let message of messages) {
+                            if (message) {
+                                let data = {}
+                                data.message = message
+                                const participant = await Participant.findOne({
+                                    user_id: message.user_id,
+                                    room_id: message.room_id
+                                })
+                                    .populate({
+                                        path: 'user_id',
+                                        select: 'user_id name age phone image'
+                                    })
+                                if (participant) {
+
+                                    let participant_save = {}
+                                    participant_save._id = participant._id
+                                    participant_save.nickname = participant.nickname
+                                    participant_save.isAdmin = participant.isAdmin
+                                    participant_save.timestamp = participant.timestamp
+                                    participant_save.allowSendMSG = participant.allowSendMSG
+                                    participant_save.allowSendFile = participant.allowSendFile
+                                    participant_save.allowViewFile = participant.allowViewFile
+                                    participant_save.user = participant.user_id
+                                    participant_save.room_id = participant.room_id
+                                    data.participant = participant_save
+                                }
+                                datas.push(data)
+                            }
+                        }
+                        res.json({success: true, data: datas})
+                    }
+                }
+            }
             return res
-                .status(404)
+                .status(403)
                 .json({
                     success: false,
-                    message: "room not found"
+                    message: "You can't access this domain!"
                 })
-        try {
-            const datas = []
-            let count_message = await Message.countDocuments({room_id: roomId})
-            if (count_message === 0) {
-                return res
-                    .json({
-                        success: true,
-                        data: datas
-                    })
-            }
-            let limit = perPage
-            if (count_message-perPage*page-perPage<0) {
-                limit = count_message-perPage*page
-                if (limit <= 0) {
-                    return res
-                    .json({
-                        success: true,
-                        data: datas
-                    })
-                }
-
-            }
-            // console.log({
-            //     count_message: count_message,
-            //     perPage: perPage,
-            //     page: page,
-            //     skip: count_message - (perPage * page) - limit,
-            //     limit: limit,
-            // })
-            const messages = await Message
-                .find({room_id: roomId})
-                .sort({'time':"asc"})
-                .skip(count_message - (perPage * page) - limit)
-                .limit(limit)
-            for (let message of messages) {
-                if (message) {
-                    let data = {}
-                    data.message = message
-                    const participant = await Participant.findOne({
-                        user_id:message.user_id,
-                        room_id:message.room_id
-                    })
-                        .populate({
-                            path: 'user_id',
-                            select: 'user_id name age phone image'
-                        })
-                    if (participant) {
-
-                        let participant_save = {}
-                        participant_save._id = participant._id
-                        participant_save.nickname = participant.nickname
-                        participant_save.isAdmin = participant.isAdmin
-                        participant_save.timestamp = participant.timestamp
-                        participant_save.allowSendMSG = participant.allowSendMSG
-                        participant_save.allowSendFile = participant.allowSendFile
-                        participant_save.allowViewFile = participant.allowViewFile
-                        participant_save.user = participant.user_id
-                        participant_save.room_id = participant.room_id
-                        data.participant = participant_save
-                    }
-                    datas.push(data)
-                }
-            }
-            res.json({success: true, data: datas})
         } catch (e) {
             res.status(500).json({success: false, message: e})
         }
@@ -254,6 +297,17 @@ class MessageController {
                 user.messages = user.messages.filter(item => item._id.toString() !== msg._id.toString())
             user.save()
         }
+
+        const {user_id} = req
+        if (user_id !== msg.user_id) {
+            return res
+                .status(403)
+                .json({
+                    success: false,
+                    message: "You can't access this domain!"
+                })
+        }
+
         if (msg.room_id) {
             const room = await Room.findById(msg.room_id)
             if (room)
