@@ -42,3 +42,12 @@ DELETE http://localhost:8080/api/user/2ZFMFC9EXnbNFvjYLHoaHD8vcBq2
 //delete all user
 #DELETE http://localhost:8080/api/user/
 DELETE http://localhost:8080/api/user/
+
+###get user by id
+#GET http://localhost:8080/api/user/userid/{{user_id}}
+GET http://localhost:8080/api/user/userid/6363681efbeb090651a1f8ad
+
+###login
+#POST http://localhost:8080/auth/login/{{user_id}}
+POST http://localhost:8080/auth/login/SIm5V7pekPTwhTZ4TGw23D4FpTs1
+Content-Type: application/json

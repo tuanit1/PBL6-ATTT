@@ -1,5 +1,4 @@
-#1
-//create room group
+###create room group
 #POST http://localhost:8080/api/room/userId
 POST http://localhost:8080/api/room/102190031
 Content-Type: application/json
@@ -10,53 +9,52 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN
   "image_ic": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPBQsJdUtRvv2fgMH4600MAsOLZIUZsFsXU4WqAc6NdQ&s"
 }
 
-###2
-//create room private
+###create room private
 #POST http://localhost:8080/api/room/private/userId&receiveId
 POST http://localhost:8080/api/room/private/102190030&102190031
 
 
-###3
-//get all room
+###get all room
 GET http://localhost:8080/api/room/
 
 
-###4
-//get room by ID user and room
+###get room by ID user and room
 #GET http://localhost:8080/api/room/{{userId}}&{{roomId}}
 GET http://localhost:8080/api/room/A931rAdlZATBBnWaySfO2UuQO8v2&6364e01fa7ec08498dd9ba9e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiQTkzMXJBZGxaQVRCQm5XYXlTZk8yVXVRTzh2MiIsInBhcnRpY2lwYW50cyI6WyI2MzY0ZTAxZmE3ZWMwODQ5OGRkOWJhYWUiLCI2MzY0ZTA4MGE3ZWMwODQ5OGRkOWJhYzkiLCI2MzY1MzY1NTQwMDVmZDMwOWEwYTdkMzYiLCI2MzY1MzhkYTQwMDVmZDMwOWEwYTdkODYiLCI2MzY4YmQyZTZlMzBjMjQ3YzQxMThkNDciLCI2MzY5MjU1ZmVkOTQ5MzQ5MWNjYWE1OGYiLCI2MzZhN2JmZDAyMWMyZDkyMGUzYjY5ZGQiLCI2MzZiNDRjY2JjNzVmODc5Zjg2NGU0MmIiLCI2MzgxZDMwMDk3MmUxZGMwNjFiZmE5YTIiXSwiaWF0IjoxNjY5ODg5ODg5LCJleHAiOjE2Njk4ODk5MTl9.OEcQuzLu_SekB_4R5sNIKnCOk884oxnylIDQ-ax15vQ
 
-
-###5
-//get private room by userId
+###get private room by userId
 #GET http://localhost:8080/api/room//private/{{userId}}
 GET http://localhost:8080/api/room/private/SIm5V7pekPTwhTZ4TGw23D4FpTs1
 
-###6
-//get group room by userId
+###get group room by userId
 #GET http://localhost:8080/api/room/group/{{userId}}
-GET http://localhost:8080/api/room/group/JoXu8k5EKNOaZwUqSHzTQUgXm503
+GET http://localhost:8080/api/room/group/6Uj630yjijSYLAEvQ1WL90Tfdra2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNlVqNjMweWppalNZTEFFdlExV0w5MFRmZHJhMiIsInBhcnRpY2lwYW50cyI6WyI2MzY0ZTAxZmE3ZWMwODQ5OGRkOWJhOWYiLCI2MzY0ZTA3ZmE3ZWMwODQ5OGRkOWJhYmMiLCI2MzY1MzY1NDQwMDVmZDMwOWEwYTdkMjkiLCI2MzY1MzhkYTQwMDVmZDMwOWEwYTdkNzkiLCI2MzY4OTBlNWFmNDZhZjMzNjAzZjU1MGIiLCI2MzY4YmQyZTZlMzBjMjQ3YzQxMThkNDYiLCI2MzY5MWZiOWVkOTQ5MzQ5MWNjYWEzMGQiLCI2MzY5YjY0MGRiNWM2OTE1ZmU4N2ViZGEiLCI2MzY5YjZlOWRiNWM2OTE1ZmU4N2ViZmYiLCI2MzY5YjkyMmM3ZGZkZGM0MmVhZGJjZTAiLCI2MzY5YmM0YzYyZWE5MmQ2ZDlhYmIyZGQiLCI2MzZhN2JmYzAyMWMyZDkyMGUzYjY5ZDAiLCI2MzgxZDJmZjk3MmUxZGMwNjFiZmE5OTUiXSwiaWF0IjoxNjY5OTA3NTYwLCJleHAiOjE2Njk5MTExNjB9.LrfvRxA55MTNPtZPkLi80rBCL85T8IHPyjV-xq_U-Sg
 
 
-###7
-//get private room by userId and partnerId
+###get private room by userId and partnerId
 #GET http://localhost:8080/api/room/check/{{userId}}&{{partnerId}}
 GET http://localhost:8080/api/room/check/6Uj630yjijSYLAEvQ1WL90Tfdra2&A931rAdlZATBBnWaySfO2UuQO8v2
 
-###8
-//get room by userId
+###get room by userId
 #GET http://localhost:8080/api/room/{{userId}}
-GET http://localhost:8080/api/room/6Uj630yjijSYLAEvQ1WL90Tfdra2
+GET http://localhost:8080/api/room/SIm5V7pekPTwhTZ4TGw23D4FpTs1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiU0ltNVY3cGVrUFR3aFRaNFRHdzIzRDRGcFRzMSIsInBhcnRpY2lwYW50cyI6WyI2MzY0ZTAxZmE3ZWMwODQ5OGRkOWJhYTciLCI2MzY0ZTA3ZmE3ZWMwODQ5OGRkOWJhYzMiLCI2MzY1MzY1NTQwMDVmZDMwOWEwYTdkMzAiLCI2MzY1MzhkYTQwMDVmZDMwOWEwYTdkODAiLCI2MzY4OTBlNWFmNDZhZjMzNjAzZjU1MGMiLCI2MzZhN2JmYzAyMWMyZDkyMGUzYjY5ZDciLCI2MzZiNDRjY2JjNzVmODc5Zjg2NGU0MmMiLCI2MzgxZDMwMDk3MmUxZGMwNjFiZmE5OWMiXSwiaWF0IjoxNjY5OTA5MTY0LCJleHAiOjE2Njk5MTI3NjR9.k8UtNL_dyzhhWtercyk93pk9u-kw9QrS2fvNklUWvq0
 
-###9
-//delete room
+###delete room
 #DELETE http://localhost:8080/api/room/{{rId}}
-DELETE http://localhost:8080/api/room/636538e84005fd309a0a7d97
+DELETE http://localhost:8080/api/room/6364e01fa7ec08498dd9ba9e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiU0ltNVY3cGVrUFR3aFRaNFRHdzIzRDRGcFRzMSIsInBhcnRpY2lwYW50cyI6WyI2MzY0ZTAxZmE3ZWMwODQ5OGRkOWJhYTciLCI2MzY0ZTA3ZmE3ZWMwODQ5OGRkOWJhYzMiLCI2MzY1MzY1NTQwMDVmZDMwOWEwYTdkMzAiLCI2MzY1MzhkYTQwMDVmZDMwOWEwYTdkODAiLCI2MzY4OTBlNWFmNDZhZjMzNjAzZjU1MGMiLCI2MzZhN2JmYzAyMWMyZDkyMGUzYjY5ZDciLCI2MzZiNDRjY2JjNzVmODc5Zjg2NGU0MmMiLCI2MzgxZDMwMDk3MmUxZGMwNjFiZmE5OWMiXSwiaWF0IjoxNjY5OTA5MTY0LCJleHAiOjE2Njk5MTI3NjR9.k8UtNL_dyzhhWtercyk93pk9u-kw9QrS2fvNklUWvq0
 
-###10
-//delete all room
+###delete all room
 #DELETE http://localhost:8080/api/room/all/
 DELETE http://localhost:8080/api/room/
+
+###login
+#POST http://localhost:8080/auth/login/{{user_id}}
+POST http://localhost:8080/auth/login/SIm5V7pekPTwhTZ4TGw23D4FpTs1
+Content-Type: application/json
 
 ###
 //Lấy tất cả các room mà user tham gia (private và group)

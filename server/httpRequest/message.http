@@ -7,7 +7,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN
 
 {
   "message": "Ymtkbg==",
-  "type": "image"
+  "type": "file"
 }
 
 ###2
@@ -18,7 +18,9 @@ GET http://localhost:8080/api/message/
 ###3
 //get all message by roomId
 #GET http://localhost:8080/api/message/room/{{roomId}}
-GET http://localhost:8080/api/message/room/6364e07fa7ec08498dd9babb
+GET http://localhost:8080/api/message/room/6368bd2e6e30c247c4118d45
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiU0ltNVY3cGVrUFR3aFRaNFRHdzIzRDRGcFRzMSIsInBhcnRpY2lwYW50cyI6WyI2MzY0ZTAxZmE3ZWMwODQ5OGRkOWJhYTciLCI2MzY0ZTA3ZmE3ZWMwODQ5OGRkOWJhYzMiLCI2MzY1MzY1NTQwMDVmZDMwOWEwYTdkMzAiLCI2MzY1MzhkYTQwMDVmZDMwOWEwYTdkODAiLCI2MzY4OTBlNWFmNDZhZjMzNjAzZjU1MGMiLCI2MzZhN2JmYzAyMWMyZDkyMGUzYjY5ZDciLCI2MzZiNDRjY2JjNzVmODc5Zjg2NGU0MmMiLCI2MzgxZDMwMDk3MmUxZGMwNjFiZmE5OWMiXSwiaWF0IjoxNjY5OTA5MTY0LCJleHAiOjE2Njk5MTI3NjR9.k8UtNL_dyzhhWtercyk93pk9u-kw9QrS2fvNklUWvq0
+
 
 ###4
 //get pagination
@@ -37,6 +39,11 @@ DELETE http://localhost:8080/api/message/634ad29c5a7e1578ce47a5f0
 #DELETE http://localhost:8080/api/message/
 DELETE http://localhost:8080/api/message/
 
+
+###login
+#POST http://localhost:8080/auth/login/{{user_id}}
+POST http://localhost:8080/auth/login/SIm5V7pekPTwhTZ4TGw23D4FpTs1
+Content-Type: application/json
 
 ###7
 //get page message 

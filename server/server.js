@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 
+const authRouter = require('./routes/auth')
 const userRouter = require('./routes/user')
 const participantRouter = require('./routes/participant')
 const roomRouter = require('./routes/room')
@@ -41,6 +42,7 @@ connectDB()
 
 app.use(express.json())
 
+app.use('/auth/', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/participant', participantRouter)
 app.use('/api/room', roomRouter)
