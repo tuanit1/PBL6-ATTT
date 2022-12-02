@@ -14,7 +14,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN
 ###2
 //get all user
 GET http://localhost:8080/api/user/
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiU0ltNVY3cGVrUFR3aFRaNFRHdzIzRDRGcFRzMSIsInBhcnRpY2lwYW50cyI6WyI2MzY0ZTAxZmE3ZWMwODQ5OGRkOWJhYTciLCI2MzY0ZTA3ZmE3ZWMwODQ5OGRkOWJhYzMiLCI2MzY1MzY1NTQwMDVmZDMwOWEwYTdkMzAiLCI2MzY1MzhkYTQwMDVmZDMwOWEwYTdkODAiLCI2MzY4OTBlNWFmNDZhZjMzNjAzZjU1MGMiLCI2MzZhN2JmYzAyMWMyZDkyMGUzYjY5ZDciLCI2MzZiNDRjY2JjNzVmODc5Zjg2NGU0MmMiLCI2MzgxZDMwMDk3MmUxZGMwNjFiZmE5OWMiXSwiaWF0IjoxNjY5OTkxMDI3LCJleHAiOjE2Njk5OTQ2Mjd9.vvY-fBNNjOv_zXKCsRDwrv51vV6V0kJrkHq2TxvMfpQ
 ###3
 //get user by id
 #GET http://localhost:8080/api/user/{{uid}}
@@ -25,7 +25,7 @@ GET http://localhost:8080/api/user/6Uj630yjijSYLAEvQ1WL90Tfdra2
 #PUT http://localhost:8080/api/user/{{uid}}
 PUT http://localhost:8080/api/user/SIm5V7pekPTwhTZ4TGw23D4FpTs1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjJkN2I4YWYyNmE1NTliZDhmOTRkNDA3IiwiaWF0IjoxNjU4Nzk5MDIyfQ.Xi-0E_F_5aqI_zICxPre-4XgRUIazLVIk3iJUviN1gk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiU0ltNVY3cGVrUFR3aFRaNFRHdzIzRDRGcFRzMSIsInBhcnRpY2lwYW50cyI6WyI2MzY0ZTAxZmE3ZWMwODQ5OGRkOWJhYTciLCI2MzY0ZTA3ZmE3ZWMwODQ5OGRkOWJhYzMiLCI2MzY1MzY1NTQwMDVmZDMwOWEwYTdkMzAiLCI2MzY1MzhkYTQwMDVmZDMwOWEwYTdkODAiLCI2MzY4OTBlNWFmNDZhZjMzNjAzZjU1MGMiLCI2MzZhN2JmYzAyMWMyZDkyMGUzYjY5ZDciLCI2MzZiNDRjY2JjNzVmODc5Zjg2NGU0MmMiLCI2MzgxZDMwMDk3MmUxZGMwNjFiZmE5OWMiXSwiaWF0IjoxNjY5OTkxMDI3LCJleHAiOjE2Njk5OTQ2Mjd9.vvY-fBNNjOv_zXKCsRDwrv51vV6V0kJrkHq2TxvMfpQ
 
 {
   "name": "bmd1eWV",
@@ -45,9 +45,9 @@ DELETE http://localhost:8080/api/user/
 
 ###get user by id
 #GET http://localhost:8080/api/user/userid/{{user_id}}
-GET http://localhost:8080/api/user/userid/6363681efbeb090651a1f8ad
+GET http://localhost:8080/api/user/userid/6388a6c3e8f797752a477f70
 
 ###login
 #POST http://localhost:8080/auth/login/{{user_id}}
-POST http://localhost:8080/auth/login/SIm5V7pekPTwhTZ4TGw23D4FpTs1
+POST http://localhost:8080/api/auth/login/SIm5V7pekPTwhTZ4TGw23D4FpTs1
 Content-Type: application/json

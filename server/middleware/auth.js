@@ -23,7 +23,7 @@ const verifyToken = (req, res, next) => {
                 .json({
                     success: false,
                     message: 'Only member can access this domain!',
-                    code: 'tokenexpired'
+                    code: 'accessTokenExpired'
                 })
         }
         return res

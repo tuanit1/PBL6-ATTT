@@ -5,11 +5,11 @@ const jwt = require("jsonwebtoken");
 const generateTokens = payload => {
     // console.log(payload.user_id)
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: '1h'
+        expiresIn: '5m'
     })
 
     const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
-        expiresIn: '1h'
+        expiresIn: '30m'
     })
     return {accessToken, refreshToken}
 }
@@ -84,6 +84,7 @@ const rfToken = async (req, res) => {
                 success: false,
                 message: "fill token!"
             })
+    console.log(refreshToken)
     try {
         const user = await User.findOne({refreshToken: refreshToken})
         // console.log(user)
@@ -108,9 +109,21 @@ const rfToken = async (req, res) => {
             })
 
     } catch (e) {
-        console.log(e)
+        if (e.name && e.name === 'TokenExpiredError') {
+            return res
+                .status(403)
+                .json({
+                    success: false,
+                    message: 'Your Token is expired!',
+                    code: 'refreshTokenExpired'
+                })
+        }
         return res
             .status(403)
+            .json({
+                success: false,
+                message: 'Invalid Token!'
+            })
     }
 }
 
