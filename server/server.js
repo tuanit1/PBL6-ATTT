@@ -42,7 +42,7 @@ connectDB()
 
 app.use(express.json())
 
-app.use('/auth/', authRouter)
+app.use('/api/auth/', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/participant', participantRouter)
 app.use('/api/room', roomRouter)
