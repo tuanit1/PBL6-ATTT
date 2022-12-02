@@ -63,10 +63,9 @@ const login = async (req, res) => {
         return res
             .json({
                 success: true,
-                token: tokens
+                data: tokens
             })
     } catch (e) {
-        console.log(e)
         return res
             .status(505)
             .json({
@@ -87,7 +86,7 @@ const rfToken = async (req, res) => {
             })
     try {
         const user = await User.findOne({refreshToken: refreshToken})
-        console.log(user)
+        // console.log(user)
         if (!user) {
             return res
                 .status(403)
@@ -95,7 +94,7 @@ const rfToken = async (req, res) => {
                     success: false
                 })
         }
-        console.log(user.user_id)
+        // console.log(user.user_id)
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
         const tokens = generateTokens({
             user_id: user.user_id,
@@ -105,7 +104,7 @@ const rfToken = async (req, res) => {
         return res
             .json({
                 success: true,
-                token: tokens
+                data: tokens
             })
 
     } catch (e) {
@@ -115,4 +114,24 @@ const rfToken = async (req, res) => {
     }
 }
 
-module.exports = {login, rfToken}
+const logout = async (req, res) => {
+    try {
+        const user = await User.findOne({user_id: req.user_id})
+        updateRefreshToken(user.user_id, null)
+        return res
+            .json({
+                success: true,
+                data: user
+            })
+    } catch (e) {
+        console.log(e)
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: "Internal server"
+            })
+    }
+}
+
+module.exports = {login, rfToken, logout}
