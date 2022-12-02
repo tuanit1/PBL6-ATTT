@@ -115,4 +115,24 @@ const rfToken = async (req, res) => {
     }
 }
 
-module.exports = {login, rfToken}
+const logout = async (req, res) => {
+    try {
+        const user = await User.findOne({user_id: req.user_id})
+        updateRefreshToken(user.user_id, null)
+        return res
+            .json({
+                success: true,
+                data: user
+            })
+    } catch (e) {
+        console.log(e)
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: "Internal server"
+            })
+    }
+}
+
+module.exports = {login, rfToken, logout}

@@ -7,4 +7,6 @@ const authController = require('../controller/auth')
 router.post('/login/:user_id', authController.login)
 
 router.post('/token', authController.rfToken)
+
+router.put('/logout', authController.logout)
 module.exports = router
