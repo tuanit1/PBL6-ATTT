@@ -91,6 +91,7 @@ const getUserById = async (req, res) => {
     const {uid} = req.params
 
     const {user_id} = req
+    console.log(user_id)
     if (user_id !== uid) {
         return res
             .status(403)
