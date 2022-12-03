@@ -11,7 +11,7 @@ router.post('/', userController.createUser)
 router.get('/', verifyToken, userController.getUser)
 
 //get user by id
-router.get('/:uid', userController.getUserById)
+router.get('/:uid', verifyToken, userController.getUserById)
 
 //update user
 router.put('/:uid', userController.updateUser)
