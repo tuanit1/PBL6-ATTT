@@ -93,6 +93,7 @@ const rfToken = async (req, res) => {
                 .status(403)
                 .json({
                     success: false,
+                    message: "Token not found!",
                     code: "refreshTokenInvalid"
                 })
         }
