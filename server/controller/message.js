@@ -192,7 +192,7 @@ class MessageController {
             for (let participant of participants) {
                 let participantJWT = await Participant.findById(participant)
                 if (participantJWT) {
-                    if (participantJWT.room_id.toString() === req.params.rid.toString()) {
+                    if (participantJWT.room_id.toString() === roomId.toString()) {
                         const room = await Room.findById(roomId)
                         if (!room)
                             return res
@@ -274,6 +274,7 @@ class MessageController {
                     message: "You can't access this domain!"
                 })
         } catch (e) {
+            console.log(e)
             res.status(500).json({success: false, message: e})
         }
     }
