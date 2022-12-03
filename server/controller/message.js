@@ -289,7 +289,7 @@ class MessageController {
                 .status(404)
                 .json({
                     success: false,
-                    message: "message not found"
+                    message: "Message not found!"
                 })
         if (msg.user_id) {
             const user = await User.findById(msg.user_id)
