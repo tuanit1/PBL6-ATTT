@@ -92,7 +92,8 @@ const rfToken = async (req, res) => {
             return res
                 .status(403)
                 .json({
-                    success: false
+                    success: false,
+                    code: "refreshTokenInvalid"
                 })
         }
         // console.log(user.user_id)
