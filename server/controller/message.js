@@ -263,7 +263,7 @@ class MessageController {
                                 datas.push(data)
                             }
                         }
-                        res.json({success: true, data: datas})
+                        return res.json({success: true, data: datas})
                     }
                 }
             }
@@ -275,7 +275,7 @@ class MessageController {
                 })
         } catch (e) {
             console.log(e)
-            res.status(500).json({success: false, message: ""+e})
+            return res.status(500).json({success: false, message: ""+e})
         }
     }
 
