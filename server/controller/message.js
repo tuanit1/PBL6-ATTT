@@ -187,7 +187,6 @@ class MessageController {
         const page = (typeof req.params.page === 'undefined') ? 1 : req.params.page
         const roomId = req.params.roomId
         try {
-
             const {participants} = req
             for (let participant of participants) {
                 let participantJWT = await Participant.findById(participant)
