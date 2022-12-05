@@ -23,6 +23,13 @@ message_nsp.on('connection', () => {
 message_nsp.on('message', data => {
     console.log(data)
 })
+const participant_nsp = ioServer.of('/participant')
+participant_nsp.on('connection', () => {
+    console.log("participant connect")
+})
+participant_nsp.on('participant', data => {
+    console.log(data)
+})
 //database
 const connectDB = async () => {
     try {
@@ -44,7 +51,7 @@ app.use(express.json())
 
 app.use('/api/auth/', authRouter)
 app.use('/api/user', userRouter)
-app.use('/api/participant', participantRouter)
+app.use('/api/participant', participantRouter(ioServer))
 app.use('/api/room', roomRouter)
 app.use('/api/message', messageRouter(ioServer))
 app.get('/', (req, res) => res.send('Hello world'))
