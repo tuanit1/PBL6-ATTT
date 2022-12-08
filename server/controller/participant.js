@@ -66,6 +66,7 @@ class ParticipantController {
             participant_socket.allowViewFile = newParticipant.allowViewFile
             participant_socket.user_id = newParticipant.user_id._id
             participant_socket.room_id = newParticipant.room_id._id
+            participant_socket.action = 'add'
 
             let data = {}
             data.participant = participant_socket
@@ -242,6 +243,7 @@ class ParticipantController {
             participant_socket.allowViewFile = updatedParticipant.allowViewFile
             participant_socket.user_id = updatedParticipant.user_id
             participant_socket.room_id = updatedParticipant.room_id
+            participant_socket.action = 'update'
 
             let data = {}
             data.participant = participant_socket
