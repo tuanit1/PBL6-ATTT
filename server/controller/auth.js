@@ -149,4 +149,35 @@ const logout = async (req, res) => {
     }
 }
 
+const check = async (req, res) => {
+    const {token} = req.body
+    if (!token)
+        return res
+            .status(401)
+            .json({
+                success: false,
+                message: "fill token!"
+            })
+    console.log(token)
+    try {
+        jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
+        return res
+            .json({
+                success: true,
+                message: "Token available!",
+                data: token,
+                code: "available"
+            })
+    } catch (e) {
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "Token expired!",
+                data: token,
+                code: "expired"
+            })
+    }
+}
+
 module.exports = {login, rfToken, logout}
