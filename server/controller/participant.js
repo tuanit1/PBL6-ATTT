@@ -314,6 +314,31 @@ class ParticipantController {
                         success: false,
                         message: "Room not exist"
                     })
+            //socket
+            let participant_socket = {}
+            participant_socket._id = req.params.participantId
+            participant_socket.nickname = deleteParticipant.nickname
+            participant_socket.isAdmin = deleteParticipant.isAdmin
+            participant_socket.timestamp = deleteParticipant.timestamp
+            participant_socket.allowSendMSG = deleteParticipant.allowSendMSG
+            participant_socket.allowSendFile = deleteParticipant.allowSendFile
+            participant_socket.allowViewFile = deleteParticipant.allowViewFile
+            participant_socket.user_id = deleteParticipant.user_id
+            participant_socket.room_id = deleteParticipant.room_id
+            participant_socket.action = 'delete'
+
+            let dtUser = {}
+            let user = await User.findById(participant_socket.user_id)
+            if (user) {
+                dtUser.user_id = user.user_id
+                dtUser.name = user.name
+                dtUser.age = user.age
+                dtUser.phone = user.phone
+                dtUser.image = user.image
+                participant_socket.user = dtUser
+            }
+            this.socket.emit('participant', participant_socket)
+
             res.json({ success: true, data: deleteParticipant, action: "delete" })
         } catch (e) {
             return res.status(500).json({ success: false, message: e });
@@ -353,6 +378,7 @@ class ParticipantController {
                         })
                 deletedParticipants.push(deleteParticipant)
             }
+
             return res
                 .json({
                     success: true,
