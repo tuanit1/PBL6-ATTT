@@ -8,8 +8,8 @@ class ParticipantController {
         this.socket = this.ioServer.of("/participant")
     }
     createParticipant = async (req, res) => {
-        const {userId, roomId} = req.params
-        const user = await User.findOne({user_id: userId})
+        const { userId, roomId } = req.params
+        const user = await User.findOne({ user_id: userId })
         if (!user)
             return res
                 .status(400)
@@ -68,9 +68,18 @@ class ParticipantController {
             participant_socket.room_id = newParticipant.room_id._id
             participant_socket.action = 'add'
 
-            let data = {}
-            data.participant = participant_socket
-            this.socket.emit('participant', data)
+            let dtUser = {}
+            let user = await User.findById(participant_socket.user_id)
+            if (user) {
+                dtUser.user_id = user.user_id
+                dtUser.name = user.name
+                dtUser.age = user.age
+                dtUser.phone = user.phone
+                dtUser.image = user.image
+                participant_socket.user = dtUser
+            }
+
+            this.socket.emit('participant', participant_socket)
             res.json({
                 success: true,
                 message: 'Create room successfully',
@@ -118,7 +127,7 @@ class ParticipantController {
 
     getParticipantById = async (req, res) => {
         try {
-            const {participantId} = req.params
+            const { participantId } = req.params
             const participant = await Participant.findById(participantId)
             if (!participant) {
                 return res
@@ -145,7 +154,7 @@ class ParticipantController {
     }
 
     getParticipantsByRoomId = async (req, res) => {
-        const {rid} = req.params
+        const { rid } = req.params
         try {
             const room = await Room.findById(rid)
             if (!room) {
@@ -175,7 +184,6 @@ class ParticipantController {
                         dtUser.age = user.age
                         dtUser.phone = user.phone
                         dtUser.image = user.image
-                        dtUser.messages = user.messages
                         data.user = dtUser
                     }
                     datas.push(data)
@@ -196,7 +204,7 @@ class ParticipantController {
     }
 
     updateParticipant = async (req, res) => {
-        const {participantId} = req.params
+        const { participantId } = req.params
         console.log(participantId)
         const participant = await Participant.findById(participantId)
         if (!participant)
@@ -222,16 +230,16 @@ class ParticipantController {
                 allowSendFile,
                 allowViewFile,
             }
-            const participantUpdateCondition = {_id: req.params.participantId}
+            const participantUpdateCondition = { _id: req.params.participantId }
             updatedParticipant = await Participant.findOneAndUpdate(
                 participantUpdateCondition,
                 updatedParticipant,
-                {new: true}
+                { new: true }
             )
             if (!updatedParticipant)
                 return res
                     .status(401)
-                    .json({success: false, message: "Participant not found"})
+                    .json({ success: false, message: "Participant not found" })
             //socket
             let participant_socket = {}
             participant_socket._id = participantId
@@ -245,10 +253,19 @@ class ParticipantController {
             participant_socket.room_id = updatedParticipant.room_id
             participant_socket.action = 'update'
 
-            let data = {}
-            data.participant = participant_socket
-            console.log(data)
-            this.socket.emit('participant', data)
+            let dtUser = {}
+            let user = await User.findById(participant_socket.user_id)
+            if (user) {
+                dtUser.user_id = user.user_id
+                dtUser.name = user.name
+                dtUser.age = user.age
+                dtUser.phone = user.phone
+                dtUser.image = user.image
+                participant_socket.user = dtUser
+            }
+
+            console.log(participant_socket)
+            this.socket.emit('participant', participant_socket)
             return res.json({
                 success: true,
                 message: "Updated!",
@@ -256,7 +273,7 @@ class ParticipantController {
             })
         } catch (e) {
             console.log(e)
-            return res.status(500).json({success: false, message: "" + e});
+            return res.status(500).json({ success: false, message: "" + e });
         }
     }
 
@@ -297,9 +314,9 @@ class ParticipantController {
                         success: false,
                         message: "Room not exist"
                     })
-            res.json({success: true, data: deleteParticipant, action: "delete"})
+            res.json({ success: true, data: deleteParticipant, action: "delete" })
         } catch (e) {
-            return res.status(500).json({success: false, message: e});
+            return res.status(500).json({ success: false, message: e });
         }
     }
 
