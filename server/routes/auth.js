@@ -10,4 +10,6 @@ router.post('/login/:user_id', authController.login)
 router.post('/token', authController.rfToken)
 
 router.put('/logout', verifyToken, authController.logout)
+
+router.get('/check', authController.check)
 module.exports = router

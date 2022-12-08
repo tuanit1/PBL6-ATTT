@@ -180,4 +180,4 @@ const check = async (req, res) => {
     }
 }
 
-module.exports = {login, rfToken, logout}
+module.exports = {login, rfToken, logout, check}
