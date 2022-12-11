@@ -169,13 +169,20 @@ const check = async (req, res) => {
                 code: "available"
             })
     } catch (e) {
+        if (e.name && e.name === 'TokenExpiredError') {
+            return res
+                .status(403)
+                .json({
+                    success: false,
+                    message: 'Only member can access this domain!',
+                    code: 'expired'
+                })
+        }
         return res
-            .status(403)
+            .status(500)
             .json({
                 success: false,
-                message: "Token expired!",
-                data: token,
-                code: "expired"
+                message: ''+e
             })
     }
 }
