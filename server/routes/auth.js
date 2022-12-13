@@ -12,4 +12,11 @@ router.post('/token', authController.rfToken)
 router.put('/logout', verifyToken, authController.logout)
 
 router.get('/check', authController.check)
+
+router.get('/health', (req, res) => {
+    console.log("tesst")
+    return res.json({
+        success: true
+    })
+})
 module.exports = router

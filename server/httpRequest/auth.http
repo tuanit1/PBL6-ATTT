@@ -35,3 +35,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiQTkzM
 //get user by id
 #GET http://localhost:8080/api/user/{{uid}}
 GET http://localhost:8080/api/user/A931rAdlZATBBnWaySfO2UuQO8v2
+
+
+###health
+GET http://localhost:8080/api/auth/health
